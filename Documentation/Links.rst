@@ -12,10 +12,10 @@ Links
 -----
 
 :TER:
-	https://typo3.org/extensions/repository/view/replacer
+  https://typo3.org/extensions/repository/view/replacer
 
 :Bug Tracker:
-	https://github.com/jweiland-net/replacer/issues
+  https://github.com/jweiland-net/replacer/issues
 
 :Git Repository:
-	https://github.com/jweiland-net/replacer
+  https://github.com/jweiland-net/replacer
