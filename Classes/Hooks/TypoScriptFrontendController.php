@@ -1,4 +1,5 @@
 <?php
+
 namespace JWeiland\Replacer\Hooks;
 
 /*
@@ -13,6 +14,8 @@ namespace JWeiland\Replacer\Hooks;
 *
 * The TYPO3 project - inspiring people to share!
 */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class TypoScriptFrontendController
@@ -49,11 +52,40 @@ class TypoScriptFrontendController
             !empty($ref->config['config']['tx_replacer.']['search.'])
             && !empty($ref->config['config']['tx_replacer.']['replace.'])
         ) {
-            $ref->content = str_replace(
-                $ref->config['config']['tx_replacer.']['search.'],
-                $ref->config['config']['tx_replacer.']['replace.'],
-                $ref->content
-            );
+            $search = [];
+            $replace = [];
+            $loops = [
+                'search' => &$ref->config['config']['tx_replacer.']['search.'],
+                'replace' => &$ref->config['config']['tx_replacer.']['replace.']
+            ];
+            foreach ($loops as $name => &$config) {
+                foreach ($config as $key => &$content) {
+                    if ($key[\strlen($key) - 1] === '.') {
+                        continue;
+                    }
+                    if (!empty($ref->config['config']['tx_replacer.'][$name . '.'][$key . '.'])) {
+                        ${$name}[] = $ref->cObj->stdWrap(
+                            $content,
+                            $ref->config['config']['tx_replacer.'][$name . '.'][$key . '.']);
+                    } else {
+                        ${$name}[] = $content;
+                    }
+                }
+            }
+            // Only replace if search and replace count are equal
+            if (\count($search) === \count($replace)) {
+                $ref->content = str_replace(
+                    $search,
+                    $replace,
+                    $ref->content
+                );
+            } else {
+                GeneralUtility::sysLog(
+                    'Each search item must have a replace item!',
+                    'replacer',
+                    GeneralUtility::SYSLOG_SEVERITY_ERROR
+                );
+            }
         }
     }
 }

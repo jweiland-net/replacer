@@ -50,7 +50,6 @@ This extension is a fork of ja_replacer
 **Table of Contents**
 
 .. toctree::
-:maxdepth: 3
-    :titlesonly:
+    :maxdepth: 3
 
     Configuration/Index
