@@ -16,6 +16,7 @@ namespace JWeiland\Replacer\Hooks;
 */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class TypoScriptFrontendController
@@ -44,7 +45,7 @@ class TypoScriptFrontendController
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $ref
      * @return void
      */
-    public function contentPostProcOutput(
+    public function contentPostProcAll(
         array &$params,
         \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $ref
     ) {
@@ -64,9 +65,11 @@ class TypoScriptFrontendController
                         continue;
                     }
                     if (!empty($ref->config['config']['tx_replacer.'][$name . '.'][$key . '.'])) {
-                        ${$name}[] = $ref->cObj->stdWrap(
-                            $content,
-                            $ref->config['config']['tx_replacer.'][$name . '.'][$key . '.']);
+                        if ($ref->cObj instanceof ContentObjectRenderer) {
+                            ${$name}[] = $ref->cObj->stdWrap(
+                                $content,
+                                $ref->config['config']['tx_replacer.'][$name . '.'][$key . '.']);
+                        }
                     } else {
                         ${$name}[] = $content;
                     }
