@@ -18,7 +18,7 @@
     "source": "https://github.com/jweiland-net/replacer"
   },
   "require": {
-    "typo3/cms-core": ">=7.6.0,<9.0"
+    "typo3/cms-core": ">=9.0,<=9.5"
   },
   "autoload": {
     "psr-4": {
