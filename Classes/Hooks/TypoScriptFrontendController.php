@@ -77,11 +77,24 @@ class TypoScriptFrontendController
             }
             // Only replace if search and replace count are equal
             if (\count($search) === \count($replace)) {
-                $ref->content = str_replace(
-                    $search,
-                    $replace,
-                    $ref->content
-                );
+                if (
+                    array_key_exists('enable_regex', $ref->config['config']['tx_replacer.'])
+                    && $ref->config['config']['tx_replacer.']['enable_regex']
+                ) {
+                    // replace using a regex as search pattern
+                    $ref->content = preg_replace(
+                        $search,
+                        $replace,
+                        $ref->content
+                    );
+                } else {
+                    // replace using a regular string as search pattern
+                    $ref->content = str_replace(
+                        $search,
+                        $replace,
+                        $ref->content
+                    );
+                }
             } else {
                 GeneralUtility::sysLog(
                     'Each search item must have a replace item!',

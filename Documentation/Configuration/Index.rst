@@ -20,7 +20,7 @@ Just wanna search for apple and replace it by banana? That´s easy.
 
 **Basic example** ::
 
-  config.tx_replacer
+  config.tx_replacer {
     search {
       10 = apple
     }
@@ -29,6 +29,21 @@ Just wanna search for apple and replace it by banana? That´s easy.
       10 = banana
     }
   }
+
+Use a regex as search pattern
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+** Basic regex example** ::
+
+  config.tx_replacer {
+    enable_regex = 1
+    search {
+      10 = /apple|raspberry/
+    }
+
+    replace {
+      10 = banana
+    }
 
 Replace links for CDN usage
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -74,7 +89,8 @@ Use stdWrap for search and replacement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can use stdWrap functionality if you need a more dynamic way to search and replace content. The main step is
-equal with the basic configuration like above.
+equal with the basic configuration like above. You can also use a regex as search pattern and a stdWrap as replacement
+at the same time!
 
 **Use page title as replacement** ::
 
