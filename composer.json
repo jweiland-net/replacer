@@ -1,7 +1,7 @@
 {
   "name": "jweiland/replacer",
   "type": "typo3-cms-extension",
-	"description": "Replaces string patterns from the page. You can use it to replace URLs for Content Delivery Network (CDN).",
+  "description": "Replaces string patterns from the page. You can use it to replace URLs for Content Delivery Network (CDN).",
   "license": "GPL-2.0-or-later",
   "keywords": ["typo3", "TYPO3 CMS", "jw", "replacer"],
   "homepage": "http://www.jweiland.net",
@@ -18,7 +18,10 @@
     "source": "https://github.com/jweiland-net/replacer"
   },
   "require": {
-    "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4"
+    "typo3/cms-core": "^8.7 || ^9.5 || ^10.4"
+  },
+  "replace": {
+    "typo3-ter/replacer": "self.version"
   },
   "autoload": {
     "psr-4": {
