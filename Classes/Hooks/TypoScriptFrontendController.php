@@ -15,6 +15,8 @@ namespace JWeiland\Replacer\Hooks;
 * The TYPO3 project - inspiring people to share!
 */
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -96,10 +98,11 @@ class TypoScriptFrontendController
                     );
                 }
             } else {
-                GeneralUtility::sysLog(
+                $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+                $logger->log(
+                    LogLevel::ERROR,
                     'Each search item must have a replace item!',
-                    'replacer',
-                    GeneralUtility::SYSLOG_SEVERITY_ERROR
+                    $ref->config['config']['tx_replacer.']
                 );
             }
         }
