@@ -6,5 +6,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPo
     \JWeiland\Replacer\Hooks\TypoScriptFrontendController::class . '->contentPostProcAll';
 
 // Register hook for uncached content (USER_INT, uncached extbase actions, etc...)
-$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']['z9_replacer'] =
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']['z9_replacer'] =
     \JWeiland\Replacer\Hooks\TypoScriptFrontendController::class . '->contentPostProcAll';
