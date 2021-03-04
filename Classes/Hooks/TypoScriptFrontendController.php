@@ -19,8 +19,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Class TypoScriptFrontendController
  * Used for Hook $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']
- *
- * @package JWeiland\Replacer\Hooks
  */
 class TypoScriptFrontendController
 {
@@ -41,7 +39,6 @@ class TypoScriptFrontendController
      *
      * @param array $params
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $ref
-     * @return void
      */
     public function contentPostProcAll(
         array &$params,
@@ -66,7 +63,8 @@ class TypoScriptFrontendController
                         if ($ref->cObj instanceof ContentObjectRenderer) {
                             ${$name}[] = $ref->cObj->stdWrap(
                                 $content,
-                                $ref->config['config']['tx_replacer.'][$name . '.'][$key . '.']);
+                                $ref->config['config']['tx_replacer.'][$name . '.'][$key . '.']
+                            );
                         }
                     } else {
                         ${$name}[] = $content;
