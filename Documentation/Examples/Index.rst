@@ -48,36 +48,22 @@ typo3conf, uploads and fileadmin occurrences with CDN links.
 
   config.tx_replacer {
     search {
-      10 = "/typo3temp/
-      11 = "typo3temp/
-      12 = "/typo3conf/
-      13 = "typo3conf/
-      14 = "/uploads/
-      15 = "uploads/
-      16 = "fileadmin/
-      17 = "/fileadmin/
+      10 = /"\/?(fileadmin|typo3temp|uploads)/
     }
 
     replace {
-      10 = "https://cdn.tld/typo3temp/
-      11 = "https://cdn.tld/typo3temp/
-      12 = "https://cdn.tld/typo3conf/
-      13 = "https://cdn.tld/typo3conf/
-      14 = "https://cdn.tld/uploads/
-      15 = "https://cdn.tld/uploads/
-      16 = "https://cdn.tld/fileadmin/
-      17 = "https://cdn.tld/fileadmin/
+      10 = "https://cdn.tld/$1
     }
   }
 
 
 Original ::
 
-  <script src="/typo3temp/assets/compressed/example.file-3b0e5471d7c4492019f42b9ea637ce4e.js.gzip?1520863480" type="text/javascript"></script>
+  <script src="/typo3temp/assets/compressed/example-3b0e5471d7c4492019f42b9ea637ce4e.js"></script>
 
 Replaced by ::
 
-  <script src="https://cdn.tld/typo3temp/assets/compressed/example.file-3b0e5471d7c4492019f42b9ea637ce4e.js.gzip?1520863480" type="text/javascript"></script>
+  <script src="https://cdn.tld/typo3temp/assets/compressed/example-3b0e5471d7c4492019f42b9ea637ce4e.js"></script>
 
 
 Use stdWrap for search and replacement
