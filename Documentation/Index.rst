@@ -21,13 +21,13 @@ replacer
     en
 
 :Description:
-    Replaces string patterns from the page. You can use it to replace URLs for Content Delivery Network (CDN).
+    Replaces string patterns and regular expressions from the page. You can use it in many ways e.g. to replace URLs for Content Delivery Network (CDN).
 
 :Keywords:
     replacer,replacement,ja_replacer
 
 :Copyright:
-    2018
+    2021
 
 :Author:
     Pascal Rinker
@@ -53,3 +53,4 @@ This extension is a fork of ja_replacer
     :maxdepth: 3
 
     Configuration/Index
+    Examples/Index
