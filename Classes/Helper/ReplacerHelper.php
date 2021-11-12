@@ -55,7 +55,7 @@ class ReplacerHelper
             ];
             foreach ($loops as $name => &$config) {
                 foreach ($config as $key => &$content) {
-                    if ($key[-1] === '.') {
+                    if (is_string($key) && $key[-1] === '.') {
                         continue;
                     }
                     if (!empty($typoScriptFrontendController->config['config']['tx_replacer.'][$name . '.'][$key . '.'])) {

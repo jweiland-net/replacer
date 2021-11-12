@@ -1,0 +1,19 @@
+config.tx_replacer {
+  search {
+    10 = apple
+  }
+
+  replace {
+    10 = banana
+  }
+}
+
+page = PAGE
+page {
+  10 = TEXT
+  10.value = I like apples
+
+  config {
+    disableAllHeaderCode = 1
+  }
+}
