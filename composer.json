@@ -25,6 +25,15 @@
 		"nimut/testing-framework": "^6.0"
 	},
 	"replace": {
+		"typo3-ter/n84_contentreplacer": "*",
+		"typo3-ter/wt_searchandreplace": "*",
+		"typo3-ter/stfl_replacer": "*",
+		"typo3-ter/ja_replacer": "*",
+		"typo3-ter/fereplace": "*",
+		"typo3-ter/cdnfiles": "*",
+		"typo3-ter/regex": "*",
+		"typo3-ter/replacecontent": "*",
+		"maxserv/replacecontent": "*",
 		"typo3-ter/replacer": "self.version"
 	},
 	"autoload": {
