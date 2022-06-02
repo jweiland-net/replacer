@@ -35,7 +35,7 @@ class ReplaceContentTest extends AbstractFunctionalTestCase
      */
     public function frontendRequestReplacesContentAsDescribedInTypoScriptOnPageWithUserInt(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             'I like bananas',
             $this->getFrontendResponse(1)->getContent()
         );

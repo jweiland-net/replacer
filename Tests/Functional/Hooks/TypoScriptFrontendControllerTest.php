@@ -29,7 +29,7 @@ class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
     public function frontendRequestUsesReplacerForBasicReplacementOnPageWithoutUserInt(): void
     {
         $this->setUpFrontendRootPage(1, [__DIR__ . '/../Fixtures/basic_template.typoscript']);
-        $this->assertEquals(
+        self::assertEquals(
             'I like bananas',
             $this->getFrontendResponse(1)->getContent()
         );
