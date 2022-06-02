@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Content Replacer',
     'description' => 'Replaces string patterns from the page. You can use it to replace URLs for Content Delivery Network (CDN).',

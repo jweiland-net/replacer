@@ -1,4 +1,5 @@
 <?php
+
 return [
     'frontend' => [
         'jweiland/replacer/replace-content' => [
