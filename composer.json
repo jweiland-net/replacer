@@ -21,8 +21,11 @@
 		"typo3/cms-core": "^9.5 || ^10.4 || ^11.0"
 	},
 	"require-dev": {
-		"friendsofphp/php-cs-fixer": "^2.0",
-		"nimut/testing-framework": "^6.0"
+		"roave/security-advisories": "dev-latest",
+		"friendsofphp/php-cs-fixer": "^3.0",
+		"nimut/testing-framework": "^6.0",
+		"phpunit/phpunit": "^9.5",
+		"phpspec/prophecy-phpunit": "^2.0"
 	},
 	"replace": {
 		"typo3-ter/replacer": "self.version"
