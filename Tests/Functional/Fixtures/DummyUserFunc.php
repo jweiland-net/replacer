@@ -13,8 +13,8 @@ namespace JWeiland\Replacer\Tests\Functional\Fixtures;
 
 class DummyUserFunc
 {
-    public function render($_, $conf)
+    public function render($_, $conf): string
     {
-        return 'hello world';
+        return '<p>Hello world</p>';
     }
 }

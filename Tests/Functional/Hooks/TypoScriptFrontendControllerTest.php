@@ -15,11 +15,14 @@ use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
 
 class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
 {
-    protected $testExtensionsToLoad = ['typo3conf/ext/replacer'];
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/replacer'
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
     }
 
@@ -29,8 +32,9 @@ class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
     public function frontendRequestUsesReplacerForBasicReplacementOnPageWithoutUserInt(): void
     {
         $this->setUpFrontendRootPage(1, [__DIR__ . '/../Fixtures/basic_template.typoscript']);
-        $this->assertEquals(
-            'I like bananas',
+
+        self::assertEquals(
+            '<p>I like bananas</p>',
             $this->getFrontendResponse(1)->getContent()
         );
     }

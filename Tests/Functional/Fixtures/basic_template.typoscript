@@ -11,7 +11,7 @@ config.tx_replacer {
 page = PAGE
 page {
   10 = TEXT
-  10.value = I like apples
+  10.value = <p>I like apples</p>
 
   config {
     disableAllHeaderCode = 1
