@@ -28,7 +28,20 @@
 		"phpspec/prophecy-phpunit": "^2.0"
 	},
 	"replace": {
+		"typo3-ter/n84_contentreplacer": "*",
+		"typo3-ter/wt_searchandreplace": "*",
+		"typo3-ter/stfl_replacer": "*",
+		"typo3-ter/ja_replacer": "*",
+		"typo3-ter/fereplace": "*",
+		"typo3-ter/cdnfiles": "*",
+		"typo3-ter/regex": "*",
+		"typo3-ter/replacecontent": "*",
+		"maxserv/replacecontent": "*",
 		"typo3-ter/replacer": "self.version"
+	},
+	"conflict": {
+		"typo3-ter/scriptmerger": "<7.0.0",
+		"sgalinski/scriptmerger": "<7.0.0"
 	},
 	"autoload": {
 		"psr-4": {
