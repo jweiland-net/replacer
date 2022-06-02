@@ -114,7 +114,7 @@ class ReplacerHelperTest extends UnitTestCase
     public function replaceContentWithValidSearchAndReplaceValues(array $config, string $contentToReplace, string $result): void
     {
         ArrayUtility::mergeRecursiveWithOverrule($this->typoscriptFrontendController->config, $config);
-        $this->assertSame(
+        self::assertSame(
             $result,
             $this->replacerHelper->replace($contentToReplace, $this->typoscriptFrontendController)
         );
@@ -166,12 +166,12 @@ class ReplacerHelperTest extends UnitTestCase
 
         $logger = $this->createMock(Logger::class);
         $logger
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('log')
             ->with(
                 LogLevel::ERROR,
                 'Each search item must have a replace item!',
-                $this->anything()
+                self::anything()
             );
         $logManager = $this->createMock(LogManager::class);
         $logManager->method('getLogger')->with(ReplacerHelper::class)->willReturn($logger);
