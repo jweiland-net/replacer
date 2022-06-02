@@ -15,12 +15,19 @@ use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
 
 class ReplaceContentTest extends AbstractFunctionalTestCase
 {
-    protected $testExtensionsToLoad = ['typo3conf/ext/replacer'];
+    /**
+     * @var string[]
+     */
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/replacer'
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+
         $this->setUpFrontendRootPage(
             1,
             [
@@ -36,7 +43,7 @@ class ReplaceContentTest extends AbstractFunctionalTestCase
     public function frontendRequestReplacesContentAsDescribedInTypoScriptOnPageWithUserInt(): void
     {
         self::assertEquals(
-            'I like bananas',
+            '<p>I like bananas</p><p>Hello world</p>',
             $this->getFrontendResponse(1)->getContent()
         );
     }
