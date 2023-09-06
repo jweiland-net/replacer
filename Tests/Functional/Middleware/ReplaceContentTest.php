@@ -11,12 +11,15 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Tests\Functional\Middleware;
 
+use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ReplaceContentTest extends FunctionalTestCase
 {
+    use SetUpFrontendSiteTrait;
+
     /**
      * @var array
      */
@@ -28,11 +31,12 @@ class ReplaceContentTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->setUpFrontendSite(1);
         $this->setUpFrontendRootPage(
             1,
             [
-                __DIR__ . '/../Fixtures/basic_template.typoscript',
-                __DIR__ . '/../Fixtures/user_int.typoscript'
+                'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
+                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript'
             ]
         );
     }
@@ -42,10 +46,9 @@ class ReplaceContentTest extends FunctionalTestCase
      */
     public function frontendRequestReplacesContentAsDescribedInTypoScriptOnPageWithUserInt(): void
     {
-        var_dump($this->getFrontendResponse(1)->getResponseContent());
         self::assertEquals(
             '<p>I like bananas</p><p>Hello world</p>',
-            $this->getFrontendResponse(1)->getResponseContent()
+            $this->getFrontendResponse(1)->getContent()
         );
     }
 }

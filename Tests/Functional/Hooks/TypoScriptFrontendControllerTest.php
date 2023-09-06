@@ -11,11 +11,14 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Tests\Functional\Hooks;
 
-use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
+use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
+class TypoScriptFrontendControllerTest extends FunctionalTestCase
 {
-    protected $testExtensionsToLoad = [
+    use SetUpFrontendSiteTrait;
+
+    protected array $testExtensionsToLoad = [
         'jweiland/replacer'
     ];
 
@@ -23,7 +26,15 @@ class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->setUpFrontendSite(1);
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
+                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript'
+            ]
+        );
     }
 
     /**
@@ -31,10 +42,8 @@ class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
      */
     public function frontendRequestUsesReplacerForBasicReplacementOnPageWithoutUserInt(): void
     {
-        $this->setUpFrontendRootPage(1, [__DIR__ . '/../Fixtures/basic_template.typoscript']);
-
         self::assertEquals(
-            '<p>I like bananas</p>',
+            '<p>I like bananas</p><p>Hello world</p>',
             $this->getFrontendResponse(1)->getContent()
         );
     }
