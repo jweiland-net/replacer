@@ -1,0 +1,6 @@
+services:
+  JWeiland\Replacer\Frontend\EventListener\CacheableContentGeneratedEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'replacer/content-modifier'
+        event: TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent
