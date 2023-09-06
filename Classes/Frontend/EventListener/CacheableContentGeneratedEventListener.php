@@ -16,8 +16,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
 /**
- * Class CacheableContentGeneratedEventListener
- *
  * This event listener handles the Cacheable Content Generation process
  * after the CacheableContentIsGeneratedEvent has occurred in TYPO3.
  * It allows for custom actions to be taken when cacheable content is generated.
@@ -29,9 +27,6 @@ final class CacheableContentGeneratedEventListener
     /**
      * __invoke method for AfterCacheableContentIsGeneratedEvent
      * This event listener registered inside Configuration/Settings.yaml
-     *
-     * @param AfterCacheableContentIsGeneratedEvent $event
-     * @return void
      */
     public function __invoke(AfterCacheableContentIsGeneratedEvent $event): void
     {
@@ -39,7 +34,16 @@ final class CacheableContentGeneratedEventListener
         if (!$event->isCachingEnabled()) {
             return;
         }
-        $event->getController()->content = GeneralUtility::makeInstance(ReplacerHelper::class)
+
+        $event->getController()->content = $this->getReplaceHelper()
             ->replace($event->getController()->content, $event->getController());
+    }
+
+    /**
+     * returns ReplaceHelper Class Object
+     */
+    public function getReplaceHelper() : ReplacerHelper
+    {
+        return GeneralUtility::makeInstance(ReplacerHelper::class);
     }
 }
