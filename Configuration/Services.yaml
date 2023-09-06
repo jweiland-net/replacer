@@ -1,4 +1,14 @@
 services:
+  # general settings
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JWeiland\Replacer\:
+    resource: '../Classes/*'
+
+  # Event Listener Configuration
   JWeiland\Replacer\Frontend\EventListener\CacheableContentGeneratedEventListener:
     tags:
       - name: event.listener
