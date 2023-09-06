@@ -1,4 +1,4 @@
-name: CI
+name: tests core v12
 
 on:
   push:

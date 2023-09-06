@@ -1,4 +1,4 @@
-name: CI
+name: tests core v11
 
 on:
   push:
@@ -8,17 +8,17 @@ on:
 
 jobs:
   testsuite:
-    name: all tests with core v12
+    name: all tests with core v11
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        php: [ '8.1', '8.2' ]
+        php: [ '7.4', '8.0', '8.1', '8.2' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Composer
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -t 12 -s composerUpdate
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -t 11 -s composerUpdate
 
       - name: Lint PHP
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
