@@ -26,6 +26,10 @@
 		"typo3/coding-standards": "^0.7.1",
 		"typo3/testing-framework": "^7.0.2"
 	},
+	"conflict": {
+		"typo3-ter/scriptmerger": "<7.0.0",
+		"sgalinski/scriptmerger": "<7.0.0"
+	},
 	"autoload": {
 		"psr-4": {
 			"JWeiland\\Replacer\\": "Classes"
