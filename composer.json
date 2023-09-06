@@ -4,10 +4,10 @@
 	"description": "Replaces string patterns from the page. You can use it to replace URLs for Content Delivery Network (CDN).",
 	"license": "GPL-2.0-or-later",
 	"keywords": ["typo3", "TYPO3 CMS", "jw", "replacer"],
-	"homepage": "http://www.jweiland.net",
+	"homepage": "https://jweiland.net",
 	"authors": [
 		{
-			"name": "Pascal Rinker",
+			"name": "Hoja Mustaffa Abdul Latheef",
 			"email": "projects@jweiland.net",
 			"role": "Developer"
 		}
@@ -18,30 +18,13 @@
 		"source": "https://github.com/jweiland-net/replacer"
 	},
 	"require": {
-		"typo3/cms-core": "^9.5 || ^10.4 || ^11.0"
+		"typo3/cms-core": "^11.5 || ^12.4"
 	},
 	"require-dev": {
-		"roave/security-advisories": "dev-latest",
-		"friendsofphp/php-cs-fixer": "^3.0",
-		"nimut/testing-framework": "^6.0",
-		"phpunit/phpunit": "^9.5",
-		"phpspec/prophecy-phpunit": "^2.0"
-	},
-	"replace": {
-		"typo3-ter/n84_contentreplacer": "*",
-		"typo3-ter/wt_searchandreplace": "*",
-		"typo3-ter/stfl_replacer": "*",
-		"typo3-ter/ja_replacer": "*",
-		"typo3-ter/fereplace": "*",
-		"typo3-ter/cdnfiles": "*",
-		"typo3-ter/regex": "*",
-		"typo3-ter/replacecontent": "*",
-		"maxserv/replacecontent": "*",
-		"typo3-ter/replacer": "self.version"
-	},
-	"conflict": {
-		"typo3-ter/scriptmerger": "<7.0.0",
-		"sgalinski/scriptmerger": "<7.0.0"
+		"friendsofphp/php-cs-fixer": "^3.25",
+		"phpunit/phpunit": "^9.5.26",
+		"typo3/coding-standards": "^0.7.1",
+		"typo3/testing-framework": "^7.0.2"
 	},
 	"autoload": {
 		"psr-4": {
@@ -54,27 +37,18 @@
 		}
 	},
 	"config": {
-		"vendor-dir": ".build/vendor"
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin",
+		"allow-plugins": {
+			"typo3/cms-composer-installers": true,
+			"typo3/class-alias-loader": true
+		}
 	},
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "replacer",
-			"app-dir": ".build",
-			"web-dir": ".build/public"
+			"web-dir": ".Build/Web"
 		}
-	},
-	"scripts": {
-		"php:fix": ".build/vendor/bin/php-cs-fixer --config=Build/.php_cs.php fix Classes Tests",
-		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
-		"ci:php:fixer": ".build/vendor/bin/php-cs-fixer --config=Build/.php_cs.php fix --dry-run -v --show-progress=dots --diff Classes Tests",
-		"ci:tests:unit": ".build/vendor/bin/phpunit -c .build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit",
-		"ci:tests:functional": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .build/vendor/bin/phpunit -c .build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}';",
-		"link-extension": [
-			"@php -r 'is_dir($extFolder=__DIR__.\"/.build/public/typo3conf/ext/\") || mkdir($extFolder, 0777, true);'",
-			"@php -r 'file_exists($extFolder=__DIR__.\"/.build/public/typo3conf/ext/replacer\") || symlink(__DIR__,$extFolder);'"
-		],
-		"post-autoload-dump": [
-			"@link-extension"
-		]
 	}
 }
