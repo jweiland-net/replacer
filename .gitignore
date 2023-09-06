@@ -1,10 +1,15 @@
 ########################
-# jweiland.net MAPS2
+# jweiland.net Replacer
 # global ignore file
 ########################
 
 # ignore generated documentation
 *GENERATED*
+/docker-compose.yaml
+/docker-compose.yml
+
+# Ignore environment files
+.env
 
 # ignore typical clutter of IDEs and editors (this could be added in .git/info/exclude,
 #  but we add it here for convenience)
@@ -26,4 +31,17 @@ vendor/*
 .build
 .php_cs.cache
 composer.lock
-.cache
+
+# Temporary files and folders
+/.cache
+.php_cs.cache
+.php-cs-fixer.cache
+.sass-cache
+.session
+*.log
+
+
+# Ignore testing stuff
+/.Build
+/composer.json.orig
+/composer.json.testing
