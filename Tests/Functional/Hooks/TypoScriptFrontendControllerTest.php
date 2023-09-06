@@ -16,7 +16,7 @@ use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
 class TypoScriptFrontendControllerTest extends AbstractFunctionalTestCase
 {
     protected $testExtensionsToLoad = [
-        'typo3conf/ext/replacer'
+        'jweiland/replacer'
     ];
 
     protected function setUp(): void

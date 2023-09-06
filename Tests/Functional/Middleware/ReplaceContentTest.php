@@ -9,25 +9,25 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Replacer\Tests\Functional\Hooks;
+namespace JWeiland\Replacer\Tests\Functional\Middleware;
 
-use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReplaceContentTest extends AbstractFunctionalTestCase
+class ReplaceContentTest extends FunctionalTestCase
 {
     /**
-     * @var string[]
+     * @var array
      */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/replacer'
+    protected array $testExtensionsToLoad = [
+        'jweiland/replacer'
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
-
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->setUpFrontendRootPage(
             1,
             [
@@ -42,11 +42,10 @@ class ReplaceContentTest extends AbstractFunctionalTestCase
      */
     public function frontendRequestReplacesContentAsDescribedInTypoScriptOnPageWithUserInt(): void
     {
+        var_dump($this->getFrontendResponse(1)->getResponseContent());
         self::assertEquals(
             '<p>I like bananas</p><p>Hello world</p>',
-            $this->getFrontendResponse(1)->getContent()
+            $this->getFrontendResponse(1)->getResponseContent()
         );
     }
-
-    // TODO: Add more tests. Check if middleware was called at least once
 }
