@@ -1,18 +1,39 @@
-name: tests core v12
+name: Test replacer for TYPO3 12LTS
 
 on:
   push:
   pull_request:
-  schedule:
-    - cron:  '27 4 * * *'
 
 jobs:
+  CGL:
+    name: Coding Style Check (TYPO3 Community CGL)
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Composer
+        run: Build/Scripts/runTests.sh -t 12 -p 8.1 -s composerUpdate
+
+      - name: Lint PHP
+        run: Build/Scripts/runTests.sh -t 12 -p 8.1 -s lint
+
+      - name: Validate code against CGL
+        run: Build/Scripts/runTests.sh -t 12 -p 8.1 -s cgl -n
+
   testsuite:
-    name: all tests with core v12
-    runs-on: ubuntu-20.04
+    name: PHP Unit and Functional Tests for TYPO3 Version 12LTS
+
+    needs: CGL
+
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
         php: [ '8.1', '8.2' ]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
