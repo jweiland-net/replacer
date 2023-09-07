@@ -2,9 +2,18 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package jweiland/replacer.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace JWeiland\Replacer\Tests\Unit\Helper;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
+use ReflectionException;
+use ReflectionProperty;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -162,7 +171,7 @@ class ReplacerHelperTest extends UnitTestCase
      * @param array $config Configuration array to set.
      *
      * @return TypoScriptFrontendController
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function createFrontendControllerMock(array $config = []): TypoScriptFrontendController
     {
@@ -171,9 +180,8 @@ class ReplacerHelperTest extends UnitTestCase
             ->getMock();
         $frontendController->cObj = new ContentObjectRenderer($frontendController);
         // Set the configuration
-        $configProperty = new \ReflectionProperty($frontendController, 'config');
+        $configProperty = new ReflectionProperty($frontendController, 'config');
         $configProperty->setAccessible(true);
-        $value = $configProperty->getValue($frontendController);
         ArrayUtility::mergeRecursiveWithOverrule($frontendController->config, $config);
         return $frontendController;
     }

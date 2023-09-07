@@ -1,10 +1,26 @@
 <?php
 
+/*
+ * This file is part of the package jweiland/replacer.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
+use PhpCsFixer\Config;
+
 if (PHP_SAPI !== 'cli') {
     die('This script supports command line usage only. Please check your command.');
 }
 
-return (new \PhpCsFixer\Config())
+$headerComment = <<<COMMENT
+This file is part of the package jweiland/replacer.
+
+For the full copyright and license information, please read the
+LICENSE file that was distributed with this source code.
+COMMENT;
+
+return (new Config())
     ->setFinder(
         (new PhpCsFixer\Finder())
             ->ignoreVCSIgnored(true)
@@ -20,6 +36,9 @@ return (new \PhpCsFixer\Config())
     ->setRules([
         '@DoctrineAnnotation' => true,
         '@PSR2' => true,
+        'header_comment' => [
+            'header' => $headerComment,
+        ],
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_after_opening_tag' => true,
         'cast_spaces' => ['space' => 'none'],

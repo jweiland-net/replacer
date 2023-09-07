@@ -18,7 +18,6 @@
 		"source": "https://github.com/jweiland-net/replacer"
 	},
 	"require": {
-		"php": ">=7.4",
 		"typo3/cms-core": "^11.5 || ^12.4"
 	},
 	"require-dev": {
@@ -28,7 +27,6 @@
 		"typo3/testing-framework": "^7.0.2"
 	},
 	"conflict": {
-		"typo3-ter/scriptmerger": "<7.0.0",
 		"sgalinski/scriptmerger": "<7.0.0"
 	},
 	"autoload": {

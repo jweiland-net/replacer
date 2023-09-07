@@ -42,7 +42,7 @@ final class CacheableContentGeneratedEventListener
     /**
      * returns ReplaceHelper Class Object
      */
-    public function getReplaceHelper() : ReplacerHelper
+    public function getReplaceHelper(): ReplacerHelper
     {
         return GeneralUtility::makeInstance(ReplacerHelper::class);
     }

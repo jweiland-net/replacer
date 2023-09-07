@@ -19,7 +19,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     use SetUpFrontendSiteTrait;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/replacer'
+        'jweiland/replacer',
     ];
 
     protected function setUp(): void
@@ -32,7 +32,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
             1,
             [
                 'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
-                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript'
+                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript',
             ]
         );
     }

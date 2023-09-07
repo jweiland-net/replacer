@@ -12,19 +12,14 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Functional\Middleware;
 
 use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ReplaceContentTest extends FunctionalTestCase
 {
     use SetUpFrontendSiteTrait;
 
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = [
-        'jweiland/replacer'
+        'jweiland/replacer',
     ];
 
     protected function setUp(): void
@@ -36,7 +31,7 @@ class ReplaceContentTest extends FunctionalTestCase
             1,
             [
                 'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
-                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript'
+                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript',
             ]
         );
     }

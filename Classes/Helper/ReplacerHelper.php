@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Helper;
 
+use function count;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,7 +52,7 @@ class ReplacerHelper
             $replace = [];
             $loops = [
                 'search' => &$typoScriptFrontendController->config['config']['tx_replacer.']['search.'],
-                'replace' => &$typoScriptFrontendController->config['config']['tx_replacer.']['replace.']
+                'replace' => &$typoScriptFrontendController->config['config']['tx_replacer.']['replace.'],
             ];
             foreach ($loops as $name => &$config) {
                 foreach ($config as $key => &$content) {
@@ -71,7 +72,7 @@ class ReplacerHelper
                 }
             }
             // Only replace if search and replace count are equal
-            if (\count($search) === \count($replace)) {
+            if (count($search) === count($replace)) {
                 if (
                     array_key_exists('enable_regex', $typoScriptFrontendController->config['config']['tx_replacer.'])
                     && $typoScriptFrontendController->config['config']['tx_replacer.']['enable_regex']
