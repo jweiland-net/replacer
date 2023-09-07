@@ -1,4 +1,4 @@
-name: tests core v11
+name: Test replacer for TYPO3 11LTS
 
 on:
   push:
