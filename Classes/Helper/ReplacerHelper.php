@@ -122,7 +122,7 @@ class ReplacerHelper implements LoggerAwareInterface
 
     protected function processContent(string $content, array $configKey): string
     {
-        if ($configKey && $this->getTypoScriptFrontendController()->cObj instanceof ContentObjectRenderer) {
+        if (($configKey !== []) && $this->getTypoScriptFrontendController()->cObj instanceof ContentObjectRenderer) {
             return $this->getTypoScriptFrontendController()->cObj->stdWrap($content, $configKey);
         }
 
