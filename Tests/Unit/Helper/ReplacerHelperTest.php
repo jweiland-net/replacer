@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Unit\Helper;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -23,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ReplacerHelperTest extends UnitTestCase
 {
-    protected MockObject&ConfigurationManager $configurationManager;
+    protected ConfigurationManager $configurationManager;
 
     protected LoggerInterface $logger;
 
@@ -31,7 +30,8 @@ final class ReplacerHelperTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
+            ->disableOriginalConstructor()->getMock();
         $this->logger = new NullLogger();
 
         parent::setUp();
