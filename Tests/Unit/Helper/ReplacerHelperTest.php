@@ -30,11 +30,10 @@ final class ReplacerHelperTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
-            ->disableOriginalConstructor()->getMock();
-        $this->logger = new NullLogger();
-
         parent::setUp();
+
+        $this->configurationManager = $this->createMock(ConfigurationManager::class);
+        $this->logger = new NullLogger();
     }
 
     protected function setupSubject(): void
@@ -174,9 +173,7 @@ final class ReplacerHelperTest extends UnitTestCase
      */
     protected function createFrontendControllerMock(array $config = []): void
     {
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer($GLOBALS['TSFE']);
         // Set the configuration
         $configProperty = new \ReflectionProperty($GLOBALS['TSFE'], 'config');

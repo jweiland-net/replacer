@@ -15,7 +15,6 @@ use JWeiland\Replacer\Helper\ReplacerHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class TypoScriptFrontendControllerHook
  * Used for Hook $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']
  */
 class TypoScriptFrontendControllerHook
@@ -33,6 +32,7 @@ class TypoScriptFrontendControllerHook
         if ($ref->isINTincScript()) {
             return;
         }
+
         $ref->content = $this->getReplacerHelper()->replace($ref->content);
     }
 
