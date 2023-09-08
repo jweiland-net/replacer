@@ -25,4 +25,4 @@ Features
 *   Global Configuration (Enable users to configure replacement rules globally for the entire TYPO3 instance.)
 *   CDN Integration (It can be used for replacing URLs with CDN links to optimize content delivery)
 *   Unit Tests & Functional Tests (Include a suite of unit tests to ensure the extension functions correctly
-and reliably.)
+    and reliably.)

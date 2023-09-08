@@ -2,6 +2,7 @@
 
 ..  _examples:
 
+======================
 Example configurations
 ======================
 

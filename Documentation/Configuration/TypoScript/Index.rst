@@ -75,8 +75,6 @@ expression you defined. Using regular expressions gives you the ability to perfo
 operations, making it particularly useful for tasks that involve complex pattern matching.This feature provides a high
 level of flexibility for customizing content on your website.
 
-..  _configuration:
-
 .. seealso::
 
    * :ref:`examples`
