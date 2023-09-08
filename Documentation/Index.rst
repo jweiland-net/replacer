@@ -51,9 +51,13 @@ This extension is a fork of ja_replacer
 ..  toctree::
     :maxdepth: 3
 
+
+    Introduction/Index
+    Installation/Index
     Configuration/Index
     Example/Index
-    Links
+    KnownProblems/Index
+    ChangeLog/Index
 
 ..  Meta Menu
 

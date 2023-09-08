@@ -7,13 +7,13 @@ Links
 -----
 
 :TER:
-	https://docs.typo3.org/p/jweiland/replacer/main/en-us/
+    https://docs.typo3.org/p/jweiland/replacer/main/en-us/
 
 :Bug Tracker:
-	https://github.com/jweiland-net/replacer/issues
+    https://github.com/jweiland-net/replacer/issues
 
 :Git Repository:
-	https://github.com/jweiland-net/replacer
+    https://github.com/jweiland-net/replacer
 
 :Contact:
-	https://jweiland.net/kontakt.html
+    https://jweiland.net/kontakt.html

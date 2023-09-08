@@ -1,8 +1,6 @@
 ..  include:: /Includes.rst.txt
 ..  highlight:: php
-
 ..  _examples:
-..  _intersphinx:
 Example configurations
 ======================
 
@@ -97,5 +95,4 @@ at the same time!
     }
   }
 
-Take a look into the stdWrap documentation for more information.
-https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/ContentObjects/Case/Index.html#stdwrap
+Take a look into the :ref:`stdWrap <t3tsref:stdwrap>` documentation for more information.
