@@ -36,10 +36,12 @@ Basic example:
 
 Outcome:
 --------
+
 Now, when visitors view your website, they will see "banana" instead of "apple" wherever it was originally used.
 
 Use a regex as search pattern
 =============================
+
 Using a regular expression (regex) as a search pattern in the Replacer Extension provides a powerful way to perform
 complex search and replace operations. Here's an elaboration:
 
@@ -67,6 +69,7 @@ Basic regex example:
 
 Outcome:
 --------
+
 Now, when visitors view your website, they will see the modified content with the replaced patterns based on the regular
 expression you defined. Using regular expressions gives you the ability to perform intricate search and replace
 operations, making it particularly useful for tasks that involve complex pattern matching.This feature provides a high
