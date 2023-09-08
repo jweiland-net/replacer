@@ -50,6 +50,7 @@ class ReplacerHelper implements LoggerAwareInterface
             $typoScriptFrontendController->config,
             'config/tx_replacer.'
         );
+
         return $this->doProcessingForReplacerConfig($contentToReplace, $replacerConfig);
     }
 
@@ -85,6 +86,7 @@ class ReplacerHelper implements LoggerAwareInterface
                 );
             }
         }
+
         return $contentToReplace;
     }
 
@@ -109,6 +111,7 @@ class ReplacerHelper implements LoggerAwareInterface
                 }
             }
         }
+
         return $processedConfigurations;
     }
 
@@ -117,9 +120,9 @@ class ReplacerHelper implements LoggerAwareInterface
         return is_string($key) && substr($key, -1) === '.';
     }
 
-    protected function processContent($content, $configKey): ?string
+    protected function processContent(string $content, array $configKey): string
     {
-        if (is_array($configKey) && $this->getTypoScriptFrontendController()->cObj instanceof ContentObjectRenderer) {
+        if (($configKey !== []) && $this->getTypoScriptFrontendController()->cObj instanceof ContentObjectRenderer) {
             return $this->getTypoScriptFrontendController()->cObj->stdWrap($content, $configKey);
         }
 

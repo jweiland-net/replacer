@@ -1,17 +1,18 @@
 ..  include:: /Includes.rst.txt
 
 ..  _examples:
+
 Example configurations
 ======================
 
 In this section you will find some examples how ext:replacer can be used.
 
 Replace pattern only within tags using a regex
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==============================================
 
 It is even possible to replace content just within a specific tag like a parameter.
 
-**Replace content within a paragraph** ::
+**Replace content within a paragraph**
 
 Code:
 
@@ -41,11 +42,12 @@ Replaced by:
     <p class="example">REPLACE</p>
 
 Replace links for CDN usage
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===========================
+
 The example TypoScript replaces typo3temp,
 typo3conf, uploads and fileadmin occurrences with CDN links.
 
-**CDN example:** ::
+**CDN example:**
 
 Code:
 
@@ -76,13 +78,13 @@ Replaced by:
 
 
 Use stdWrap for search and replacement
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+======================================
 
 You can use stdWrap functionality if you need a more dynamic way to search and replace content. The main step is
 equal with the basic configuration like above. You can also use a regex as search pattern and a stdWrap as replacement
 at the same time!
 
-**Use page title as replacement** ::
+**Use page title as replacement**
 
 Code:
 
@@ -99,7 +101,7 @@ Code:
       }
     }
 
-**Use page modification date as replacement** ::
+**Use page modification date as replacement**
 
 Code:
 
