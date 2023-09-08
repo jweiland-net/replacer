@@ -14,7 +14,7 @@ namespace JWeiland\Replacer\Tests\Functional\Hooks;
 use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TypoScriptFrontendControllerTest extends FunctionalTestCase
+class TypoScriptFrontendControllerHookTest extends FunctionalTestCase
 {
     use SetUpFrontendSiteTrait;
 

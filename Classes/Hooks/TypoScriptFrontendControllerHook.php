@@ -15,10 +15,10 @@ use JWeiland\Replacer\Helper\ReplacerHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class TypoScriptFrontendController
+ * Class TypoScriptFrontendControllerHook
  * Used for Hook $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']
  */
-class TypoScriptFrontendController
+class TypoScriptFrontendControllerHook
 {
     /**
      * Replace text for pages without USER_INT plugins. Otherwise Middleware\ReplaceContent will be used!
@@ -33,7 +33,11 @@ class TypoScriptFrontendController
         if ($ref->isINTincScript()) {
             return;
         }
-        $ref->content = GeneralUtility::makeInstance(ReplacerHelper::class)
-            ->replace($ref->content, $ref);
+        $ref->content = $this->getReplacerHelper()->replace($ref->content);
+    }
+
+    public function getReplacerHelper(): ReplacerHelper
+    {
+        return GeneralUtility::makeInstance(ReplacerHelper::class);
     }
 }

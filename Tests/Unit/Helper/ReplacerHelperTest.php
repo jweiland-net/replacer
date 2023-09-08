@@ -12,19 +12,37 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Unit\Helper;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
-use ReflectionException;
-use ReflectionProperty;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogLevel;
-use TYPO3\CMS\Core\Log\LogManager;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ReplacerHelperTest extends UnitTestCase
+final class ReplacerHelperTest extends UnitTestCase
 {
+    protected MockObject&ConfigurationManager $configurationManager;
+
+    protected LoggerInterface $logger;
+
+    protected ReplacerHelper $subject;
+
+    protected function setUp(): void
+    {
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $this->logger = new NullLogger();
+
+        parent::setUp();
+    }
+
+    protected function setupSubject(): void
+    {
+        $this->subject = new ReplacerHelper();
+        $this->subject->setLogger($this->logger);
+    }
+
     /**
      * @returnDataProvider
      */
@@ -98,9 +116,9 @@ class ReplacerHelperTest extends UnitTestCase
      */
     public function replaceContentWithValidSearchAndReplaceValues(array $config, string $contentToReplace, string $result): void
     {
-        $frontendController = $this->createFrontendControllerMock($config);
-        $replacerHelper = new ReplacerHelper();
-        $actualResult = $replacerHelper->replace($contentToReplace, $frontendController);
+        $this->setupSubject();
+        $this->createFrontendControllerMock($config);
+        $actualResult = $this->subject->replace($contentToReplace);
         self::assertSame($result, $actualResult);
     }
 
@@ -146,43 +164,23 @@ class ReplacerHelperTest extends UnitTestCase
      */
     public function replaceContentWithMissingSearchOrReplaceValuesWritesLogEntry(array $config): void
     {
-        $this->resetSingletonInstances = true;
-        $frontendController = $this->createFrontendControllerMock($config);
-        $logger = $this->createMock(Logger::class);
-        $logger
-            ->expects(self::once())
-            ->method('log')
-            ->with(
-                LogLevel::ERROR,
-                'Each search item must have a replace item!',
-                self::anything()
-            );
-
-        $logManager = $this->createMock(LogManager::class);
-        $logManager->method('getLogger')->with(ReplacerHelper::class)->willReturn($logger);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
-        $replacerHelper = new ReplacerHelper();
-        $replacerHelper->replace('hello world', $frontendController);
+        $this->setupSubject();
+        $this->createFrontendControllerMock($config);
+        $this->subject->replace('hello world');
     }
 
     /**
      * Create a mock TypoScriptFrontendController instance.
-     *
-     * @param array $config Configuration array to set.
-     *
-     * @return TypoScriptFrontendController
-     * @throws ReflectionException
      */
-    protected function createFrontendControllerMock(array $config = []): TypoScriptFrontendController
+    protected function createFrontendControllerMock(array $config = []): void
     {
-        $frontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $frontendController->cObj = new ContentObjectRenderer($frontendController);
+        $GLOBALS['TSFE']->cObj = new ContentObjectRenderer($GLOBALS['TSFE']);
         // Set the configuration
-        $configProperty = new ReflectionProperty($frontendController, 'config');
+        $configProperty = new \ReflectionProperty($GLOBALS['TSFE'], 'config');
         $configProperty->setAccessible(true);
-        ArrayUtility::mergeRecursiveWithOverrule($frontendController->config, $config);
-        return $frontendController;
+        ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TSFE']->config, $config);
     }
 }

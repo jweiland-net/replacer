@@ -14,7 +14,7 @@ namespace JWeiland\Replacer\Tests\Functional\Middleware;
 use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReplaceContentTest extends FunctionalTestCase
+class ReplaceContentMiddlewareTest extends FunctionalTestCase
 {
     use SetUpFrontendSiteTrait;
 
