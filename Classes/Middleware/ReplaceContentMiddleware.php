@@ -12,30 +12,38 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Middleware;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
+use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Middleware to replace content using TSFE.
  * Will be used for pages with USER_INT plugins only!
- * Otherwise Hooks\TypoScriptFrontendController will replace the content.
+ * Otherwise, TypoScriptFrontendControllerHook will replace the content.
  */
-class ReplaceContent implements MiddlewareInterface
+class ReplaceContentMiddleware implements MiddlewareInterface
 {
+    use GetTypoScriptFrontendControllerTrait;
+
+    private ReplacerHelper $replacerHelper;
+
+    public function __construct(ReplacerHelper $replacerHelper)
+    {
+        $this->replacerHelper = $replacerHelper;
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if (!$GLOBALS['TSFE']->isINTincScript() || $response instanceof NullResponse) {
+        if (!$this->getTypoScriptFrontendController()->isINTincScript() || $response instanceof NullResponse) {
             return $response;
         }
-        $content = GeneralUtility::makeInstance(ReplacerHelper::class)
-            ->replace((string)$response->getBody(), $GLOBALS['TSFE']);
 
+        $content = $this->replacerHelper->replace((string)$response->getBody());
         $body = new Stream('php://temp', 'rw');
         $body->write($content);
 

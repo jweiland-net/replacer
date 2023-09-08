@@ -9,30 +9,29 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Replacer\Tests\Functional\Hooks;
+namespace JWeiland\Replacer\Tests\Functional\Middleware;
 
-use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
+use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReplaceContentTest extends AbstractFunctionalTestCase
+class ReplaceContentMiddlewareTest extends FunctionalTestCase
 {
-    /**
-     * @var string[]
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/replacer'
+    use SetUpFrontendSiteTrait;
+
+    protected array $testExtensionsToLoad = [
+        'jweiland/replacer',
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
-
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->setUpFrontendSite(1);
         $this->setUpFrontendRootPage(
             1,
             [
-                __DIR__ . '/../Fixtures/basic_template.typoscript',
-                __DIR__ . '/../Fixtures/user_int.typoscript'
+                'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
+                'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript',
             ]
         );
     }
@@ -47,6 +46,4 @@ class ReplaceContentTest extends AbstractFunctionalTestCase
             $this->getFrontendResponse(1)->getContent()
         );
     }
-
-    // TODO: Add more tests. Check if middleware was called at least once
 }

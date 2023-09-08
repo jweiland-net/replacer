@@ -1,21 +1,16 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: Includes.txt
+..  include:: /Includes.rst.txt
 
 .. _start:
 
-=============================================================
+=========
 replacer
-=============================================================
+=========
 
 :Classification:
     replacer
 
 :Version:
-    |release|
+    3.0.0
 
 :Language:
     en
@@ -27,30 +22,45 @@ replacer
     replacer,replacement,ja_replacer
 
 :Copyright:
-    2021
+    2023
 
 :Author:
-    Pascal Rinker
+    Hoja Mustaffa Abdul Latheef
 
 :Email:
     projects@jweiland.net
 
 :License:
-    This document is published under the Open Content License
-    available from http://www.opencontent.org/opl.shtml
+    This document is published under the
+    `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+    license.
 
 :Rendered:
     |today|
 
-The content of this document is related to TYPO3,
-a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+----
+
+The content of this document is related to TYPO3, a GNU/GPL CMS/Framework available from www.typo3.org.
 
 This extension is a fork of ja_replacer
 
-**Table of Contents**
+----
 
-.. toctree::
+**Table of Contents:**
+
+..  toctree::
     :maxdepth: 3
 
+
+    Introduction/Index
+    Installation/Index
     Configuration/Index
-    Examples/Index
+    Example/Index
+    KnownProblems/Index
+    ChangeLog/Index
+
+..  Meta Menu
+
+..  toctree::
+    :hidden:
+
