@@ -1,6 +1,6 @@
 <?php defined('TYPO3') or die();
 
-use JWeiland\Replacer\Hooks\TypoScriptFrontendController;
+use JWeiland\Replacer\Hooks\TypoScriptFrontendControllerHook;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -16,6 +16,6 @@ call_user_func(static function () {
         // For Version above 12.4 instead of Hook implementation PSR 14 Event configured under
         // 'Configurations/Services.yaml event we used is AfterCacheableContentIsGeneratedEvent
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']['z9_replacer'] =
-            TypoScriptFrontendController::class . '->contentPostProcAll';
+            TypoScriptFrontendControllerHook::class . '->contentPostProcAll';
     }
 });

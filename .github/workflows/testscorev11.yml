@@ -1,4 +1,4 @@
-name: Test replacer for TYPO3 11LTS
+name: Test replacer for TYPO3 11 LTS
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         run: Build/Scripts/runTests.sh -t 11 -p 8.1 -s cgl -n
 
   testsuite:
-    name: PHP Unit and Functional Tests for TYPO3 Version 11LTS
+    name: PHP Unit and Functional Tests for TYPO3 Version 11 LTS
 
     needs: CGL
 

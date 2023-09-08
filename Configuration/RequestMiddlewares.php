@@ -7,12 +7,12 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use JWeiland\Replacer\Middleware\ReplaceContent;
+use JWeiland\Replacer\Middleware\ReplaceContentMiddleware;
 
 return [
     'frontend' => [
         'jweiland/replacer/replace-content' => [
-            'target' => ReplaceContent::class,
+            'target' => ReplaceContentMiddleware::class,
             'after' => [
                 'typo3/cms-frontend/maintenance-mode',
             ],

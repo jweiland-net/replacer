@@ -11,18 +11,23 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Helper;
 
-use function count;
-use TYPO3\CMS\Core\Log\LogLevel;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Helper class for content replacement using TSFE
  */
-class ReplacerHelper
+class ReplacerHelper implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    use GetTypoScriptFrontendControllerTrait;
+
     /**
      * Search and replace text from $contentToReplace
      * You must set the Search and Replace patterns via TypoScript.
@@ -37,69 +42,93 @@ class ReplacerHelper
      *       2="http://mycdn.com/f/
      *     }
      *   }
-     *
-     * @param string $contentToReplace
-     * @param TypoScriptFrontendController $typoScriptFrontendController
-     * @return string
      */
-    public function replace(string $contentToReplace, TypoScriptFrontendController $typoScriptFrontendController): string
+    public function replace(string $contentToReplace): string
     {
-        if (
-            !empty($typoScriptFrontendController->config['config']['tx_replacer.']['search.'])
-            && !empty($typoScriptFrontendController->config['config']['tx_replacer.']['replace.'])
-        ) {
-            $search = [];
-            $replace = [];
-            $loops = [
-                'search' => &$typoScriptFrontendController->config['config']['tx_replacer.']['search.'],
-                'replace' => &$typoScriptFrontendController->config['config']['tx_replacer.']['replace.'],
-            ];
-            foreach ($loops as $name => &$config) {
-                foreach ($config as $key => &$content) {
-                    if (is_string($key) && $key[-1] === '.') {
-                        continue;
-                    }
-                    if (!empty($typoScriptFrontendController->config['config']['tx_replacer.'][$name . '.'][$key . '.'])) {
-                        if ($typoScriptFrontendController->cObj instanceof ContentObjectRenderer) {
-                            ${$name}[] = $typoScriptFrontendController->cObj->stdWrap(
-                                $content,
-                                $typoScriptFrontendController->config['config']['tx_replacer.'][$name . '.'][$key . '.']
-                            );
-                        }
+        try {
+            $typoScriptFrontendController = $this->getTypoScriptFrontendController();
+            $replacerConfig = ArrayUtility::getValueByPath(
+                $typoScriptFrontendController->config,
+                'config/tx_replacer.'
+            );
+            $typoscriptConfigurations = $this->getSearchAndReplaceConfigurations($replacerConfig);
+
+            if (is_array($typoscriptConfigurations['search']) && is_array($typoscriptConfigurations['replace'])) {
+                // this will do if the typoscript configuration contains stdWrap
+                $searchAndReplaceConfigurations = $this->doStandardWrapProcessing($typoscriptConfigurations);
+                $search = ArrayUtility::getValueByPath($searchAndReplaceConfigurations, 'search');
+                $replace = ArrayUtility::getValueByPath($searchAndReplaceConfigurations, 'replace');
+
+                // Only replace if search and replace count are equal
+                if (count($search) === count($replace)) {
+                    if ((is_array($replacerConfig))
+                        && array_key_exists('enable_regex', $replacerConfig)
+                        && (int)$replacerConfig['enable_regex'] === 1
+                    ) {
+                        // replace using a regex as search pattern
+                        $contentToReplace = preg_replace($search, $replace, $contentToReplace);
                     } else {
-                        ${$name}[] = $content;
+                        // replace using a regular string as search pattern
+                        $contentToReplace = str_replace($search, $replace, $contentToReplace);
                     }
-                }
-            }
-            // Only replace if search and replace count are equal
-            if (count($search) === count($replace)) {
-                if (
-                    array_key_exists('enable_regex', $typoScriptFrontendController->config['config']['tx_replacer.'])
-                    && $typoScriptFrontendController->config['config']['tx_replacer.']['enable_regex']
-                ) {
-                    // replace using a regex as search pattern
-                    $contentToReplace = preg_replace(
-                        $search,
-                        $replace,
-                        $contentToReplace
-                    );
                 } else {
-                    // replace using a regular string as search pattern
-                    $contentToReplace = str_replace(
-                        $search,
-                        $replace,
-                        $contentToReplace
+                    $this->logger->log(
+                        LogLevel::ERROR,
+                        'Each search item must have a replace item!',
+                        $replacerConfig
                     );
                 }
-            } else {
-                $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-                $logger->log(
-                    LogLevel::ERROR,
-                    'Each search item must have a replace item!',
-                    $typoScriptFrontendController->config['config']['tx_replacer.']
-                );
             }
+        } catch (MissingArrayPathException $missingArrayPathException) {
+            // If value does not exist then no replacement
         }
         return $contentToReplace;
+    }
+
+    private function doStandardWrapProcessing(array $typoscriptConfigurations): array
+    {
+        $processedConfigurations = [];
+        $replacerConfig = $this->getTypoScriptFrontendController()->config['config']['tx_replacer.'];
+        foreach ($typoscriptConfigurations as $configurationPointer => $config) {
+            foreach ($config as $key => $content) {
+                if ($this->shouldSkipKey($key)) {
+                    continue;
+                }
+
+                if (ArrayUtility::isValidPath($replacerConfig, $configurationPointer . './' . $key . '.')) {
+                    $configKey = $replacerConfig[$configurationPointer . '.'][$key . '.'];
+                    $processedConfigurations[$configurationPointer][] = $this->processContent(
+                        $content,
+                        $configKey,
+                        $this->getTypoScriptFrontendController()
+                    );
+                } else {
+                    $processedConfigurations[$configurationPointer][] = $content;
+                }
+            }
+        }
+        return $processedConfigurations;
+    }
+
+    private function shouldSkipKey($key): bool
+    {
+        return is_string($key) && substr($key, -1) === '.';
+    }
+
+    private function processContent($content, $configKey): ?string
+    {
+        if (is_array($configKey) && $this->getTypoScriptFrontendController()->cObj instanceof ContentObjectRenderer) {
+            return $this->getTypoScriptFrontendController()->cObj->stdWrap($content, $configKey);
+        }
+
+        return $content;
+    }
+
+    private function getSearchAndReplaceConfigurations(array $replacerConfig): array
+    {
+        return [
+            'search' => ArrayUtility::getValueByPath($replacerConfig, 'search.'),
+            'replace' => ArrayUtility::getValueByPath($replacerConfig, 'replace.'),
+        ];
     }
 }
