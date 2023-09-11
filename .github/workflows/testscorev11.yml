@@ -1,7 +1,6 @@
 name: Test replacer for TYPO3 11 LTS
 
 on:
-  push:
   pull_request:
 
 jobs:
