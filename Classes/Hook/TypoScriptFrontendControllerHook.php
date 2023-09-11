@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Replacer\Hooks;
+namespace JWeiland\Replacer\Hook;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
