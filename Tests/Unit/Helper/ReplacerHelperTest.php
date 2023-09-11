@@ -41,7 +41,7 @@ final class ReplacerHelperTest extends UnitTestCase
         parent::setUp();
 
         $this->configurationManagerMock = $this->createMock(ConfigurationManager::class);
-        $this->logger = $this->createMock(Logger::class);
+        $this->loggerMock = $this->createMock(Logger::class);
 
         $this->subject = new ReplacerHelper();
         $this->subject->setLogger($this->loggerMock);
