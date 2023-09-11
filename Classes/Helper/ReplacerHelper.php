@@ -60,15 +60,14 @@ class ReplacerHelper implements LoggerAwareInterface
 
         if (is_array($typoscriptConfigurations['search']) && is_array($typoscriptConfigurations['replace'])) {
             // this will do if the typoscript configuration contains stdWrap
-            $searchAndReplaceConfigurations = $this->doStandardWrapProcessing(
-                $typoscriptConfigurations,
-                $replacerConfig
-            );
+            $searchAndReplaceConfigurations = $this->doStandardWrapProcessing($typoscriptConfigurations);
             $search = $this->getArrayValueByPath($searchAndReplaceConfigurations, 'search');
             $replace = $this->getArrayValueByPath($searchAndReplaceConfigurations, 'replace');
 
             // Only replace if search and replace count are equal
             if (count($search) === count($replace)) {
+
+                // check whether the configuration enabled for regular expressions
                 if (array_key_exists('enable_regex', $replacerConfig)
                     && (int)$replacerConfig['enable_regex'] === 1
                 ) {
@@ -79,45 +78,46 @@ class ReplacerHelper implements LoggerAwareInterface
                     $contentToReplace = str_replace($search, $replace, $contentToReplace);
                 }
             } else {
-                $this->logger->log(
-                    LogLevel::ERROR,
-                    'Each search item must have a replace item!',
-                    $replacerConfig
-                );
+                $this->writeLogEntry($replacerConfig);
             }
         }
 
         return $contentToReplace;
     }
 
-    protected function doStandardWrapProcessing(array $typoscriptConfigurations, array $replacerConfig): array
+    protected function doStandardWrapProcessing(array $typoscriptConfigurations): array
     {
         $processedConfigurations = [];
-        foreach ($typoscriptConfigurations as $configurationPointer => $config) {
-            foreach ($config as $key => $content) {
-                if ($this->shouldSkipKey($key)) {
-                    continue;
-                }
+        $processedConfigurations['search'] = $this->getArrayValueByPath($typoscriptConfigurations, 'search');
+        foreach ($this->getArrayValueByPath(
+            $typoscriptConfigurations,
+            'replace'
+        ) as $typoscriptConfigurationKey => $configurations) {
+            $configurationSearchPointer = str_replace('.', '', (string)$typoscriptConfigurationKey);
 
-                if (ArrayUtility::isValidPath($replacerConfig, $configurationPointer . './' . $key . '.')) {
-                    $configKey = $replacerConfig[$configurationPointer . '.'][$key . '.'];
-                    $processedConfigurations[$configurationPointer][] = $this->processContent(
-                        $content,
-                        $configKey,
-                        $this->getTypoScriptFrontendController()
-                    );
-                } else {
-                    $processedConfigurations[$configurationPointer][] = $content;
-                }
+            // if the skip is true it means that the configuration is array inside the replacer and we
+            // need to go for stdWrap processing also anything in that configuration pointer should be
+            // replaced with this processed value.
+            if ($this->shouldSkipKey($typoscriptConfigurationKey)) {
+                $processedConfigurations['replace'][$configurationSearchPointer] = $this->processContent(
+                    (string)$this->getArrayValueByPath(
+                        $processedConfigurations,
+                        'search/' . $configurationSearchPointer
+                    ),
+                    $configurations
+                );
+            } else {
+                $processedConfigurations['replace'][$typoscriptConfigurationKey] = $configurations;
             }
+
         }
 
         return $processedConfigurations;
     }
 
-    protected function shouldSkipKey($key): bool
+    protected function shouldSkipKey($typoscriptConfigurationKey): bool
     {
-        return is_string($key) && substr($key, -1) === '.';
+        return is_string($typoscriptConfigurationKey) && substr($typoscriptConfigurationKey, -1) === '.';
     }
 
     protected function processContent(string $content, array $configKey): string
@@ -137,12 +137,22 @@ class ReplacerHelper implements LoggerAwareInterface
         ];
     }
 
-    protected function getArrayValueByPath(array $array, $path): array
+    protected function getArrayValueByPath(array $array, $path)
     {
         try {
             return ArrayUtility::getValueByPath($array, $path);
         } catch (MissingArrayPathException $missingArrayPathException) {
+            $this->writeLogEntry($array);
             return [];
         }
+    }
+
+    protected function writeLogEntry(array $replacerConfig): void
+    {
+        $this->logger->log(
+            LogLevel::ERROR,
+            'Each search item must have a replace item!',
+            $replacerConfig
+        );
     }
 }
