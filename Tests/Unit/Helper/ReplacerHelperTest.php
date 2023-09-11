@@ -71,8 +71,8 @@ final class ReplacerHelperTest extends UnitTestCase
                 '0',
                 ['10' => 'value to be replaced by a hashed value'],
                 ['10' => 'value to be hashed', '10.' => ['hash' => 'md5']],
-                'contentToReplace' => 'Test stdWrap "hash" property: "value to be replaced by a hashed value"',
-                'result' => 'Test stdWrap "hash" property: "c116a220a8a3055920fb5bcc26ca361d"',
+                'contentToReplace' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
+                'result' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
             ],
         ];
     }
@@ -111,14 +111,20 @@ final class ReplacerHelperTest extends UnitTestCase
     public function invalidConfigurationForSearchAndReplace(): array
     {
         return [
-            'Replacement with missing replacement entry will not work' => [['10' => 'apple', '20' => 'coke'], ['10' => 'banana']],
-            'Replacement with missing search entry will not work' => [['10' => 'apple'], ['10' => 'banana', '20' => 'pepsi']],
+            //'Replacement with values as array keys will not work' => [['apple', 'coke'], ['banana', 'pepsi']],
+            'Replacement with missing replacement entry will not work' => [
+                ['10' => 'apple', '20' => 'coke'],
+                ['10' => 'banana'],
+            ],
+            'Replacement with missing search entry will not work' => [
+                ['10' => 'apple'],
+                ['10' => 'banana', '20' => 'pepsi'],
+            ],
         ];
     }
 
     /**
      * @test
-     *
      * @dataProvider invalidConfigurationForSearchAndReplace
      */
     public function replaceContentWithMissingSearchOrReplaceValuesWritesLogEntry(array $search, array $replacement): void
