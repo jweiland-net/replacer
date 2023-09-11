@@ -114,11 +114,51 @@ Code:
       }
 
       replace {
-        10 =
+        # this will replace the timestamp marker in the template with generated value
         10.stdWrap {
         # format like 2017-05-31 09:08
         field = tstamp
         date = Y-m-d H:i
+      }
+    }
+
+**More Example with page modification data**
+
+The following code can be used to wrap the search parameter with strong tag and the md5 hash of page title.
+
+Code:
+
+..  code-block:: typoscript
+
+    config.tx_replacer {
+      search {
+        10 = hash value to be replaced
+      }
+
+      replace {
+        10.wrap = <strong>|</strong>
+        #replacement will be md5 hash of current page title
+        10.field = title
+        10.hash = md5
+      }
+    }
+
+It also accepts the root key 10 in replacement with `current`. So the md5 hash of search root key will be replaced.
+
+Code:
+
+..  code-block:: typoscript
+
+    config.tx_replacer {
+      search {
+        10 = hash value to be replaced
+      }
+
+      replace {
+        # replacement will be md5 hash of search key - "hash value to be replaced"
+        10 = current
+        10.wrap = <strong>|</strong>
+        10.hash = md5
       }
     }
 
