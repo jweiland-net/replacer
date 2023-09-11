@@ -69,10 +69,10 @@ final class ReplacerHelperTest extends UnitTestCase
             ],
             'Replace value with another value which will be hashed with stdWrap property "hash"' => [
                 '0',
-                ['10' => 'value to be hashed'],
-                ['10' => 'banana', '20' => 'pepsi'],
-                'contentToReplace' => 'Today some apples and coke. Tomorrow a raspberry cake and sinalco.',
-                'result' => 'Today some bananas and pepsi. Tomorrow a banana cake and pepsi.',
+                ['10' => 'value to be replaced by a hashed value'],
+                ['10' => 'value to be hashed', '10.' => ['hash' => 'md5']],
+                'contentToReplace' => 'Test stdWrap "hash" property: "value to be replaced by a hashed value"',
+                'result' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
             ],
         ];
     }
@@ -90,12 +90,10 @@ final class ReplacerHelperTest extends UnitTestCase
     ): void {
         $config = [
             'config' => [
-                'config' => [
-                    'tx_replacer.' => [
-                        'enable_regex' => $enableRegExp,
-                        'search.' => $search,
-                        'replace.' => $replacement,
-                    ],
+                'tx_replacer.' => [
+                    'enable_regex' => $enableRegExp,
+                    'search.' => $search,
+                    'replace.' => $replacement,
                 ],
             ],
         ];
@@ -114,8 +112,8 @@ final class ReplacerHelperTest extends UnitTestCase
     {
         return [
             'Replacement with values as array keys will not work' => [['apple', 'coke'], ['banana', 'pepsi']],
-            'Replacement with missing replacement entry will not work' => [['10' => ['apple', 'coke']], ['10' => ['banana']]],
-            'Replacement with missing search entry will not work' => [['10' => ['apple']], ['10' => ['banana', 'pepsi']]],
+            'Replacement with missing replacement entry will not work' => [['10' => 'apple', '20' => 'coke'], ['10' => 'banana']],
+            'Replacement with missing search entry will not work' => [['10' => 'apple'], ['10' => 'banana', '20' => 'pepsi']],
         ];
     }
 
@@ -137,11 +135,9 @@ final class ReplacerHelperTest extends UnitTestCase
 
         $config = [
             'config' => [
-                'config' => [
-                    'tx_replacer.' => [
-                        'search.' => $search,
-                        'replace.' => $replacement,
-                    ],
+                'tx_replacer.' => [
+                    'search.' => $search,
+                    'replace.' => $replacement,
                 ],
             ],
         ];
