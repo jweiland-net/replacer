@@ -7,7 +7,7 @@
 ChangeLog
 =========
 
-Version 3.0.0 (Release Date: September 08, 2023)
+Version 3.0.0 (Release Date: September 11, 2023)
 ================================================
 
 *   Add support for TYPO3 v12 LTS
