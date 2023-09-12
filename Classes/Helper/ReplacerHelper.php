@@ -124,8 +124,7 @@ class ReplacerHelper implements LoggerAwareInterface
     }
 
     /**
-     * @param $configuration
-     * @return bool
+     * @param array|string $configuration
      */
     protected function shouldDoStdWrap($configuration): bool
     {
