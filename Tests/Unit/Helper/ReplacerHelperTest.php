@@ -33,7 +33,6 @@ final class ReplacerHelperTest extends UnitTestCase
     /**
      * @var LoggerInterface|MockObject
      */
-    protected $loggerMock;
 
     protected ReplacerHelper $subject;
 
@@ -42,10 +41,8 @@ final class ReplacerHelperTest extends UnitTestCase
         parent::setUp();
 
         $this->configurationManagerMock = $this->createMock(ConfigurationManager::class);
-        $this->loggerMock = $this->createMock(Logger::class);
 
         $this->subject = new ReplacerHelper(new TypoScriptHelper());
-        $this->subject->setLogger($this->loggerMock);
     }
 
     /**
@@ -55,21 +52,23 @@ final class ReplacerHelperTest extends UnitTestCase
     {
         return [
             'Replace values with simple text replacement' => [
-                '0',
                 ['10' => 'apple', '20' => 'coke'],
                 ['10' => 'banana', '20' => 'pepsi'],
-                'contentToReplace' => 'Today some apples and coke. Tomorrow a raspberry cake and sinalco.',
-                'result' => 'Today some bananas and pepsi. Tomorrow a raspberry cake and sinalco.',
+                'contentToReplace' => 'Today some apples and coke. Tomorrow a raspberry cake and coke.',
+                'result' => 'Today some bananas and pepsi. Tomorrow a raspberry cake and pepsi.',
             ],
             'Replace values with regular expressions' => [
-                '1',
-                ['10' => '/apple|raspberry/', '20' => '/coke|sinalco/'],
+                [
+                    '10' => '/apple|raspberry/',
+                    '10.' => [ 'enable_regex' => '1'],
+                    '20' => '/coke|sinalco/',
+                    '20.' => [ 'enable_regex' => '1'],
+                ],
                 ['10' => 'banana', '20' => 'pepsi'],
-                'contentToReplace' => 'Today some apples and coke. Tomorrow a raspberry cake and sinalco.',
-                'result' => 'Today some bananas and pepsi. Tomorrow a banana cake and pepsi.',
+                'contentToReplace' => 'Today some apple and coke. Tomorrow a raspberry cake and sinalco.',
+                'result' => 'Today some banana and pepsi. Tomorrow a banana cake and pepsi.',
             ],
             'Replace value with another value which will be hashed with stdWrap property "hash"' => [
-                '0',
                 ['10' => 'value to be replaced by a hashed value'],
                 ['10' => 'value to be hashed', '10.' => ['hash' => 'md5']],
                 'contentToReplace' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
@@ -83,7 +82,6 @@ final class ReplacerHelperTest extends UnitTestCase
      * @dataProvider validReplacements
      */
     public function replaceContentWithValidSearchAndReplaceValues(
-        string $enableRegExp,
         array $search,
         array $replacement,
         string $contentToReplace,
@@ -92,7 +90,6 @@ final class ReplacerHelperTest extends UnitTestCase
         $config = [
             'config' => [
                 'tx_replacer.' => [
-                    'enable_regex' => $enableRegExp,
                     'search.' => $search,
                     'replace.' => $replacement,
                 ],
@@ -107,49 +104,6 @@ final class ReplacerHelperTest extends UnitTestCase
             $result,
             $actualResult
         );
-    }
-
-    public function invalidConfigurationForSearchAndReplace(): array
-    {
-        return [
-            'Replacement with missing replacement entry will not work' => [
-                ['10' => 'apple', '20' => 'coke'],
-                ['10' => 'banana'],
-            ],
-            'Replacement with missing search entry will not work' => [
-                ['10' => 'apple'],
-                ['10' => 'banana', '20' => 'pepsi'],
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider invalidConfigurationForSearchAndReplace
-     */
-    public function replaceContentWithMissingSearchOrReplaceValuesWritesLogEntry(array $search, array $replacement): void
-    {
-        $this->loggerMock
-            ->expects(self::atLeastOnce())
-            ->method('log')
-            ->with(
-                self::equalTo(LogLevel::ERROR),
-                self::equalTo('Each search item must have a replace item!'),
-                self::isType('array')
-            );
-
-        $config = [
-            'config' => [
-                'tx_replacer.' => [
-                    'search.' => $search,
-                    'replace.' => $replacement,
-                ],
-            ],
-        ];
-
-        $this->createFrontendControllerMock($config);
-
-        $this->subject->replace('hello world');
     }
 
     /**

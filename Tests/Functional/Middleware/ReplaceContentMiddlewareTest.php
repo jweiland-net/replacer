@@ -42,7 +42,7 @@ class ReplaceContentMiddlewareTest extends FunctionalTestCase
     public function frontendRequestReplacesContentAsDescribedInTypoScriptOnPageWithUserInt(): void
     {
         self::assertEquals(
-            '<p>I like bananas</p><p>Hello world</p>',
+            '<p>I like fruits</p><p>This is MD5 Hash Example: 0800fc577294c34e0b28ad2839435945</p><p>Hello world</p>',
             $this->getFrontendResponse(1)->getContent()
         );
     }
