@@ -54,7 +54,7 @@ class TypoScriptHelper
      */
     public function findValueOrConfiguration(array $typoScriptConfiguration, $key)
     {
-        return $typoScriptConfiguration[$key] ?: $typoScriptConfiguration[$key . '.'] ?: '';
+        return $typoScriptConfiguration[$key] ?? $typoScriptConfiguration[$key . '.'] ?? '';
     }
 
     public function isRegExpEnabled(array $typoScriptConfiguration, int $key): bool
