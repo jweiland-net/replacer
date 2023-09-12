@@ -241,6 +241,15 @@ class ReplacerHelper implements LoggerAwareInterface
         }
     }
 
+    protected function writeErrorLogEntry(string $message, array $replacerConfig): void
+    {
+        $this->logger->log(
+            LogLevel::ERROR,
+            $message,
+            $replacerConfig
+        );
+    }
+
     protected function getFreshReplaceConfiguration(): ReplaceConfiguration
     {
         return GeneralUtility::makeInstance(ReplaceConfiguration::class);
