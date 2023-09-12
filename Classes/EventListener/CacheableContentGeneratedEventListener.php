@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\EventListener;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
 /**
