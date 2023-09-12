@@ -79,10 +79,26 @@ class TypoScriptHelper
 
     /**
      * It will return true, if there is a configuration "10" given for $key "10."
+     *
+     * @param string|int $key
      */
-    public function hasBaseEntry(array $typoScriptConfiguration, string $key): bool
+    public function hasBaseEntry(array $typoScriptConfiguration, $key): bool
     {
-        return isset($typoScriptConfiguration[rtrim($key, '.')]);
+        return isset($typoScriptConfiguration[rtrim((string)$key, '.')]);
+    }
+
+    /**
+     * It will return true, if there is a replacement configuration found return
+     *
+     * @param string|int $key
+     */
+    public function hasReplaceEntry(array $typoScriptConfiguration, $key): bool
+    {
+        // depends on search keys here it will be either 10 or 10. so we need to handle here
+        $keyCombinedWithTypoScriptPointer = rtrim((string)$key,'.') . '.';
+        return (isset($typoScriptConfiguration[rtrim((string)$key,'.')])
+            || isset($typoScriptConfiguration[$keyCombinedWithTypoScriptPointer])
+        );
     }
 
     public function applyStdWrapProperties(string $content, array $stdWrapConfiguration): string

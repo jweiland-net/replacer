@@ -100,9 +100,13 @@ class ReplacerHelper implements LoggerAwareInterface
 
         foreach ($searchTypoScriptConfiguration as $key => $valueOrConfiguration) {
             // If configuration (10. -> array) has a base entry (10), this property was already processed. Skip.
+            // If there is a search and no replace configuration skip
             if (
-                is_array($valueOrConfiguration)
-                && $this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key)
+                (is_array($valueOrConfiguration)
+                    && $this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key))
+                ||
+                ($this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key)
+                    && !$this->typoScriptHelper->hasReplaceEntry($replaceTypoScriptConfiguration, $key))
             ) {
                 continue;
             }
