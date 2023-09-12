@@ -14,9 +14,6 @@ namespace JWeiland\Replacer\Tests\Unit\Helper;
 use JWeiland\Replacer\Helper\ReplacerHelper;
 use JWeiland\Replacer\Helper\TypoScriptHelper;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -29,10 +26,6 @@ final class ReplacerHelperTest extends UnitTestCase
      * @var ConfigurationManager|MockObject
      */
     protected $configurationManagerMock;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
 
     protected ReplacerHelper $subject;
 

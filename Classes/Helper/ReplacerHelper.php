@@ -14,9 +14,6 @@ namespace JWeiland\Replacer\Helper;
 use JWeiland\Replacer\Configuration\ReplaceConfiguration;
 use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,10 +22,9 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Helper class for content replacement using TSFE
  */
-class ReplacerHelper implements LoggerAwareInterface
+class ReplacerHelper
 {
     use GetTypoScriptFrontendControllerTrait;
-    use LoggerAwareTrait;
 
     protected TypoScriptHelper $typoScriptHelper;
 
@@ -239,15 +235,6 @@ class ReplacerHelper implements LoggerAwareInterface
         } catch (MissingArrayPathException $missingArrayPathException) {
             return [];
         }
-    }
-
-    protected function writeErrorLogEntry(string $message, array $replacerConfig): void
-    {
-        $this->logger->log(
-            LogLevel::ERROR,
-            $message,
-            $replacerConfig
-        );
     }
 
     protected function getFreshReplaceConfiguration(): ReplaceConfiguration

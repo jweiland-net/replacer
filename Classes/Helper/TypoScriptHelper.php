@@ -95,10 +95,10 @@ class TypoScriptHelper
     public function hasReplaceEntry(array $typoScriptConfiguration, $key): bool
     {
         // depends on search keys here it will be either 10 or 10. so we need to handle here
-        $keyCombinedWithTypoScriptPointer = rtrim((string)$key,'.') . '.';
-        return (isset($typoScriptConfiguration[rtrim((string)$key,'.')])
-            || isset($typoScriptConfiguration[$keyCombinedWithTypoScriptPointer])
-        );
+        $keyCombinedWithTypoScriptPointer = rtrim((string)$key, '.') . '.';
+
+        return isset($typoScriptConfiguration[rtrim((string)$key, '.')])
+            || isset($typoScriptConfiguration[$keyCombinedWithTypoScriptPointer]);
     }
 
     public function applyStdWrapProperties(string $content, array $stdWrapConfiguration): string
