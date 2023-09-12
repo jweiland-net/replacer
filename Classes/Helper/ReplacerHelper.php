@@ -54,22 +54,22 @@ class ReplacerHelper implements LoggerAwareInterface
         return $this->doStdWrapProcessingAndReplace($replacerConfig, $contentToReplace);
     }
 
-    protected function doStdWrapProcessingAndReplace(array $typoscriptConfigurations, string $contentToReplace): string
+    protected function doStdWrapProcessingAndReplace(array $typoScriptConfigurations, string $contentToReplace): string
     {
-        $search = $this->getValueByPath($typoscriptConfigurations, 'search.');
+        $search = $this->getValueByPath($typoScriptConfigurations, 'search.');
         $replace = [];
         foreach ($this->getValueByPath(
-            $typoscriptConfigurations,
+            $typoScriptConfigurations,
             'replace.'
-        ) as $typoscriptConfigurationKey => $configurations) {
-            $configurationSearchPointer = rtrim((string)$typoscriptConfigurationKey, '.');
+        ) as $typoScriptConfigurationKey => $configurations) {
+            $configurationSearchPointer = rtrim((string)$typoScriptConfigurationKey, '.');
 
             // if the skip is true it means that the configuration is array inside the replacer and we
             // need to go for stdWrap processing also anything in that configuration pointer should be
             // replaced with this processed value.
             if ($this->shouldDoStdWrap($configurations)) {
                 $contentForProcessing = $this->getContentForProcessing(
-                    $typoscriptConfigurations,
+                    $typoScriptConfigurations,
                     $configurationSearchPointer
                 );
                 $replace[$configurationSearchPointer] = $this->processContent(
@@ -77,15 +77,15 @@ class ReplacerHelper implements LoggerAwareInterface
                     $configurations
                 );
             } else {
-                $replace[$typoscriptConfigurationKey] = $configurations;
+                $replace[$typoScriptConfigurationKey] = $configurations;
             }
         }
 
         // check search and replace configurations are same
         if (count($search) === count($replace)) {
             // check whether the configuration enabled for regular expressions
-            if (array_key_exists('enable_regex', $typoscriptConfigurations)
-                && (int)$typoscriptConfigurations['enable_regex'] === 1
+            if (array_key_exists('enable_regex', $typoScriptConfigurations)
+                && (int)$typoScriptConfigurations['enable_regex'] === 1
             ) {
                 // replace using a regex as search pattern
                 $contentToReplace = preg_replace($search, $replace, $contentToReplace);
@@ -94,7 +94,7 @@ class ReplacerHelper implements LoggerAwareInterface
                 $contentToReplace = str_replace($search, $replace, $contentToReplace);
             }
         } else {
-            $this->writeErrorLogEntry('Each search item must have a replace item!', $typoscriptConfigurations);
+            $this->writeErrorLogEntry('Each search item must have a replace item!', $typoScriptConfigurations);
         }
 
         return $contentToReplace;
@@ -102,7 +102,6 @@ class ReplacerHelper implements LoggerAwareInterface
 
     protected function getContentForProcessing(array $processingConfig, string $configurationSearchPointer): string
     {
-
         $contentForProcessing = $this->getValueByPath(
             $processingConfig,
             'search./' . $configurationSearchPointer
