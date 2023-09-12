@@ -140,8 +140,9 @@ class ReplacerHelper implements LoggerAwareInterface
      * Return a new value which was build by just stdWrap configuration
      *
      * @param string|array $valueOrConfiguration
+     * @param string|int $key
      */
-    protected function getProcessedValue($valueOrConfiguration, array $typoScriptConfiguration, int $key): string
+    protected function getProcessedValue($valueOrConfiguration, array $typoScriptConfiguration, $key): string
     {
         if (is_string($valueOrConfiguration)) {
             if ($this->typoScriptHelper->hasStdWrapProperties($typoScriptConfiguration, $key)) {

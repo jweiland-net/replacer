@@ -17,9 +17,12 @@ class TypoScriptHelper
 {
     use GetTypoScriptFrontendControllerTrait;
 
-    public function hasStdWrapProperties(array $typoScriptConfiguration, int $key): bool
+    /**
+     * @param string|int $key
+     */
+    public function hasStdWrapProperties(array $typoScriptConfiguration, $key): bool
     {
-        $possibleStdWrapConfiguration = $typoScriptConfiguration[$key . '.'] ?? [];
+        $possibleStdWrapConfiguration = $typoScriptConfiguration[rtrim((string)$key, '.') . '.'] ?? [];
         if (is_array($possibleStdWrapConfiguration)) {
             // "enable_regex" is not part of stdWrap properties
             unset($possibleStdWrapConfiguration['enable_regex']);
@@ -30,10 +33,13 @@ class TypoScriptHelper
         return false;
     }
 
-    public function getStdWrapProperties(array $typoScriptConfiguration, int $key): array
+    /**
+     * @param string|int $key
+     */
+    public function getStdWrapProperties(array $typoScriptConfiguration, $key): array
     {
         if ($this->hasStdWrapProperties($typoScriptConfiguration, $key)) {
-            $stdWrapConfiguration = $typoScriptConfiguration[$key . '.'] ?? [];
+            $stdWrapConfiguration = $typoScriptConfiguration[rtrim((string)$key, '.') . '.'] ?? [];
 
             // "enable_regex" is not part of stdWrap properties
             unset($stdWrapConfiguration['enable_regex']);
@@ -54,12 +60,17 @@ class TypoScriptHelper
      */
     public function findValueOrConfiguration(array $typoScriptConfiguration, $key)
     {
-        return $typoScriptConfiguration[$key] ?? $typoScriptConfiguration[$key . '.'] ?? '';
+        return $typoScriptConfiguration[rtrim((string)$key, '.')]
+            ?? $typoScriptConfiguration[rtrim((string)$key, '.') . '.']
+            ?? '';
     }
 
-    public function isRegExpEnabled(array $typoScriptConfiguration, int $key): bool
+    /**
+     * @param string|int $key
+     */
+    public function isRegExpEnabled(array $typoScriptConfiguration, $key): bool
     {
-        $subTypoScriptConfiguration = $typoScriptConfiguration[$key . '.'] ?? [];
+        $subTypoScriptConfiguration = $typoScriptConfiguration[rtrim((string)$key, '.') . '.'] ?? [];
 
         return is_array($subTypoScriptConfiguration)
             && array_key_exists('enable_regex', $subTypoScriptConfiguration)
