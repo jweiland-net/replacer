@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Unit\Helper;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
+use JWeiland\Replacer\Helper\TypoScriptHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -43,7 +44,7 @@ final class ReplacerHelperTest extends UnitTestCase
         $this->configurationManagerMock = $this->createMock(ConfigurationManager::class);
         $this->loggerMock = $this->createMock(Logger::class);
 
-        $this->subject = new ReplacerHelper();
+        $this->subject = new ReplacerHelper(new TypoScriptHelper());
         $this->subject->setLogger($this->loggerMock);
     }
 

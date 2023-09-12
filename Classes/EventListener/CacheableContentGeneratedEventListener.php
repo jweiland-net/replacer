@@ -24,6 +24,13 @@ use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
  */
 final class CacheableContentGeneratedEventListener
 {
+    protected ReplacerHelper $replacerHelper;
+
+    public function __construct(ReplacerHelper $replaceHelper)
+    {
+        $this->replacerHelper = $replaceHelper;
+    }
+
     /**
      * __invoke method for AfterCacheableContentIsGeneratedEvent
      * This event listener registered inside Configuration/Settings.yaml
@@ -35,15 +42,8 @@ final class CacheableContentGeneratedEventListener
             return;
         }
 
-        $event->getController()->content = $this->getReplaceHelper()
-            ->replace($event->getController()->content);
-    }
-
-    /**
-     * returns ReplaceHelper Class Object
-     */
-    public function getReplaceHelper(): ReplacerHelper
-    {
-        return GeneralUtility::makeInstance(ReplacerHelper::class);
+        $event->getController()->content = $this->replacerHelper->replace(
+            $event->getController()->content
+        );
     }
 }
