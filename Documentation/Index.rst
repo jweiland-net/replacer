@@ -57,6 +57,7 @@ This extension is a fork of ja_replacer
     Configuration/Index
     Example/Index
     KnownProblems/Index
+    AdministratorManual/Index
     ChangeLog/Index
 
 ..  Meta Menu

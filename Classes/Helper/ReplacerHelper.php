@@ -11,22 +11,27 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Helper;
 
+use JWeiland\Replacer\Configuration\ReplaceConfiguration;
+use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Helper class for content replacement using TSFE
  */
-class ReplacerHelper implements LoggerAwareInterface
+class ReplacerHelper
 {
-    use LoggerAwareTrait;
-
     use GetTypoScriptFrontendControllerTrait;
+
+    protected TypoScriptHelper $typoScriptHelper;
+
+    public function __construct(TypoScriptHelper $typoScriptHelper)
+    {
+        $this->typoScriptHelper = $typoScriptHelper;
+    }
 
     /**
      * Search and replace text from $contentToReplace
@@ -46,43 +51,25 @@ class ReplacerHelper implements LoggerAwareInterface
     public function replace(string $contentToReplace): string
     {
         $typoScriptFrontendController = $this->getTypoScriptFrontendController();
-        $replacerConfig = $this->getArrayValueByPath(
+        $replacerTypoScriptConfiguration = $this->getValueByPath(
             $typoScriptFrontendController->config,
             'config/tx_replacer.'
         );
 
-        return $this->doProcessingForReplacerConfig($contentToReplace, $replacerConfig);
-    }
-
-    protected function doProcessingForReplacerConfig(string $contentToReplace, array $replacerConfig): string
-    {
-        $typoscriptConfigurations = $this->getSearchAndReplaceConfigurations($replacerConfig);
-
-        if (is_array($typoscriptConfigurations['search']) && is_array($typoscriptConfigurations['replace'])) {
-            // this will do if the typoscript configuration contains stdWrap
-            $searchAndReplaceConfigurations = $this->doStandardWrapProcessing(
-                $typoscriptConfigurations,
-                $replacerConfig
-            );
-            $search = $this->getArrayValueByPath($searchAndReplaceConfigurations, 'search');
-            $replace = $this->getArrayValueByPath($searchAndReplaceConfigurations, 'replace');
-
-            // Only replace if search and replace count are equal
-            if (count($search) === count($replace)) {
-                if (array_key_exists('enable_regex', $replacerConfig)
-                    && (int)$replacerConfig['enable_regex'] === 1
-                ) {
-                    // replace using a regex as search pattern
-                    $contentToReplace = preg_replace($search, $replace, $contentToReplace);
-                } else {
-                    // replace using a regular strings as search pattern
-                    $contentToReplace = str_replace($search, $replace, $contentToReplace);
-                }
+        foreach ($this->getReplaceConfigurationStorage($replacerTypoScriptConfiguration) as $replaceConfiguration) {
+            if ($replaceConfiguration->isUseRegExp()) {
+                // replace using a regex as search pattern
+                $contentToReplace = preg_replace(
+                    $replaceConfiguration->getSearchValue(),
+                    $replaceConfiguration->getReplaceValue(),
+                    $contentToReplace
+                );
             } else {
-                $this->logger->log(
-                    LogLevel::ERROR,
-                    'Each search item must have a replace item!',
-                    $replacerConfig
+                // replace using a regular strings as search pattern
+                $contentToReplace = str_replace(
+                    $replaceConfiguration->getSearchValue(),
+                    $replaceConfiguration->getReplaceValue(),
+                    $contentToReplace
                 );
             }
         }
@@ -90,34 +77,122 @@ class ReplacerHelper implements LoggerAwareInterface
         return $contentToReplace;
     }
 
-    protected function doStandardWrapProcessing(array $typoscriptConfigurations, array $replacerConfig): array
+    /**
+     * @return \SplObjectStorage|ReplaceConfiguration[]
+     */
+    protected function getReplaceConfigurationStorage(array $replacerTypoScriptConfiguration): \SplObjectStorage
     {
-        $processedConfigurations = [];
-        foreach ($typoscriptConfigurations as $configurationPointer => $config) {
-            foreach ($config as $key => $content) {
-                if ($this->shouldSkipKey($key)) {
-                    continue;
-                }
+        $replacerConfigurationStorage = new \SplObjectStorage();
 
-                if (ArrayUtility::isValidPath($replacerConfig, $configurationPointer . './' . $key . '.')) {
-                    $configKey = $replacerConfig[$configurationPointer . '.'][$key . '.'];
-                    $processedConfigurations[$configurationPointer][] = $this->processContent(
-                        $content,
-                        $configKey,
-                        $this->getTypoScriptFrontendController()
-                    );
-                } else {
-                    $processedConfigurations[$configurationPointer][] = $content;
-                }
+        $searchTypoScriptConfiguration = $this->getConfigurationFor(
+            $replacerTypoScriptConfiguration,
+            ConfigurationTypeEnumeration::cast('search')
+        );
+
+        $replaceTypoScriptConfiguration = $this->getConfigurationFor(
+            $replacerTypoScriptConfiguration,
+            ConfigurationTypeEnumeration::cast('replace')
+        );
+
+        foreach ($searchTypoScriptConfiguration as $key => $valueOrConfiguration) {
+            // If configuration (10. -> array) has a base entry (10), this property was already processed. Skip.
+            // If there is a search and no replace configuration skip
+            if (
+                (is_array($valueOrConfiguration)
+                    && $this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key))
+                ||
+                ($this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key)
+                    && !$this->typoScriptHelper->hasReplaceEntry($replaceTypoScriptConfiguration, $key))
+            ) {
+                continue;
             }
+
+            $replaceConfiguration = $this->getFreshReplaceConfiguration();
+
+            // Add regular expression information
+            $replaceConfiguration->setUseRegExp(
+                $this->typoScriptHelper->isRegExpEnabled($searchTypoScriptConfiguration, $key)
+            );
+
+            // Add search value
+            $replaceConfiguration->setSearchValue(
+                $this->getProcessedValue($valueOrConfiguration, $searchTypoScriptConfiguration, $key)
+            );
+
+            // Add replace value
+            $replaceConfiguration->setReplaceValue(
+                $this->getProcessedValue(
+                    $this->typoScriptHelper->findValueOrConfiguration($replaceTypoScriptConfiguration, $key),
+                    $replaceTypoScriptConfiguration,
+                    $key
+                )
+            );
+
+            $replacerConfigurationStorage->attach($replaceConfiguration);
         }
 
-        return $processedConfigurations;
+        return $replacerConfigurationStorage;
     }
 
-    protected function shouldSkipKey($key): bool
+    /**
+     * Return value unprocessed, if is string and no stdWrap configuration was found
+     * Return value processed, if is string and stdWrap configuration was found
+     * Return a new value which was build by just stdWrap configuration
+     *
+     * @param string|array $valueOrConfiguration
+     * @param string|int $key
+     */
+    protected function getProcessedValue($valueOrConfiguration, array $typoScriptConfiguration, $key): string
     {
-        return is_string($key) && substr($key, -1) === '.';
+        if (is_string($valueOrConfiguration)) {
+            if ($this->typoScriptHelper->hasStdWrapProperties($typoScriptConfiguration, $key)) {
+                $value = $this->typoScriptHelper->applyStdWrapProperties(
+                    $valueOrConfiguration,
+                    $this->typoScriptHelper->getStdWrapProperties($typoScriptConfiguration, $key)
+                );
+            } else {
+                $value = $valueOrConfiguration;
+            }
+        } else {
+            $value = $this->typoScriptHelper->applyStdWrapProperties(
+                '',
+                $valueOrConfiguration
+            );
+        }
+
+        return $value;
+    }
+
+    protected function getContentForProcessing(array $processingConfig, string $configurationSearchPointer): string
+    {
+
+        $contentForProcessing = $this->getValueByPath(
+            $processingConfig,
+            'search./' . $configurationSearchPointer
+        );
+
+        if (ArrayUtility::isValidPath($processingConfig, 'replace./' . $configurationSearchPointer)) {
+            $replaceContentForProcessing = (string)$this->getValueByPath(
+                $processingConfig,
+                'replace./' . $configurationSearchPointer
+            );
+            // if the replace content for processing is `current` then take the value from search array key
+            if ($replaceContentForProcessing === 'current') {
+                return $contentForProcessing;
+            }
+
+            return $replaceContentForProcessing;
+        }
+        return $contentForProcessing;
+    }
+
+    /**
+     * @param $configuration
+     * @return bool
+     */
+    protected function shouldDoStdWrap($configuration): bool
+    {
+        return is_array($configuration);
     }
 
     protected function processContent(string $content, array $configKey): string
@@ -129,20 +204,41 @@ class ReplacerHelper implements LoggerAwareInterface
         return $content;
     }
 
-    protected function getSearchAndReplaceConfigurations(array $replacerConfig): array
-    {
-        return [
-            'search' => $this->getArrayValueByPath($replacerConfig, 'search.'),
-            'replace' => $this->getArrayValueByPath($replacerConfig, 'replace.'),
-        ];
+    protected function getConfigurationFor(
+        array $replacerConfiguration,
+        ConfigurationTypeEnumeration $configurationType
+    ): array {
+        try {
+            $typoScriptConfiguration = ArrayUtility::getValueByPath(
+                $replacerConfiguration,
+                (string)$configurationType
+            );
+
+            // We need correct sorting: 10, 10., 20, 30, 30.
+            ksort($typoScriptConfiguration, SORT_NATURAL);
+
+            return $typoScriptConfiguration;
+        } catch (MissingArrayPathException | \RuntimeException $exception) {
+            return [];
+        }
     }
 
-    protected function getArrayValueByPath(array $array, $path): array
+    /**
+     * @param array $array
+     * @param string $path
+     * @return array|string
+     */
+    protected function getValueByPath(array $array, string $path)
     {
         try {
             return ArrayUtility::getValueByPath($array, $path);
         } catch (MissingArrayPathException $missingArrayPathException) {
             return [];
         }
+    }
+
+    protected function getFreshReplaceConfiguration(): ReplaceConfiguration
+    {
+        return GeneralUtility::makeInstance(ReplaceConfiguration::class);
     }
 }

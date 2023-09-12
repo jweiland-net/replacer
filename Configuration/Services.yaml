@@ -10,7 +10,7 @@ services:
   # Event Listener Configuration
   # This event listener is implemented for replacing the Hook implementation which is removed in TYPO3 12LTS
   # the implementation is same as the ReplaceContent Middleware (which only replace for USER_INT Plugins)
-  JWeiland\Replacer\Frontend\EventListener\CacheableContentGeneratedEventListener:
+  JWeiland\Replacer\EventListener\CacheableContentGeneratedEventListener:
     tags:
       - name: event.listener
         identifier: 'replacer/content-modifier'

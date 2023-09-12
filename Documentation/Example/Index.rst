@@ -20,9 +20,9 @@ Code:
 ..  code-block:: typoscript
 
     config.tx_replacer {
-      enable_regex = 1
       search {
         10 = #(<p[^>]*>.*?)SEARCH(.*?<\/p>)#
+        10.enable_regex = 1
       }
 
       replace {
@@ -57,6 +57,7 @@ Code:
     config.tx_replacer {
       search {
         10 = /"\/?(fileadmin|typo3temp|uploads)/
+        10.enable_regex = 1
       }
 
       replace {
@@ -97,7 +98,6 @@ Code:
       }
 
       replace {
-        10 =
         10.stdWrap.field = title
       }
     }
@@ -114,11 +114,53 @@ Code:
       }
 
       replace {
-        10 =
+        # this will replace the timestamp marker in the template with generated value
         10.stdWrap {
         # format like 2017-05-31 09:08
         field = tstamp
         date = Y-m-d H:i
+      }
+    }
+
+**More Example with page modification data**
+
+The following code can be used to wrap the search parameter with strong tag and the md5 hash of page title.
+
+Code:
+
+..  code-block:: typoscript
+
+    config.tx_replacer {
+      search {
+        10 = hash value to be replaced
+      }
+
+      replace {
+        10.wrap = <strong>|</strong>
+        #replacement will be md5 hash of current page title
+        10.field = title
+        10.hash = md5
+      }
+    }
+
+We can replace the value in the search key with hash value of the search key by configuring the current property of
+stdWrap. Here is an example below.
+
+Code:
+
+..  code-block:: typoscript
+
+    config.tx_replacer {
+      search {
+        10 = hash value to be replaced
+        10.setContentToCurrent = 1
+      }
+
+      replace {
+        # replacement will be md5 hash of search key - "hash value to be replaced"
+        10.current = 1
+        10.wrap = <strong>|</strong>
+        10.hash = md5
       }
     }
 
