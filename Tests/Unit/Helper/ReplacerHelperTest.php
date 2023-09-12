@@ -112,7 +112,6 @@ final class ReplacerHelperTest extends UnitTestCase
     public function invalidConfigurationForSearchAndReplace(): array
     {
         return [
-            //'Replacement with values as array keys will not work' => [['apple', 'coke'], ['banana', 'pepsi']],
             'Replacement with missing replacement entry will not work' => [
                 ['10' => 'apple', '20' => 'coke'],
                 ['10' => 'banana'],
