@@ -56,10 +56,10 @@ Basic regex example:
 ..  code-block:: typoscript
 
     config.tx_replacer {
-      # if this is enabled make sure all search keys should be in regex
-      enable_regex = 1
       search {
         10 = /apple|raspberry/
+        # regular expression replace enabled for this search key
+        10.enable_regex = 1
       }
 
       replace {
