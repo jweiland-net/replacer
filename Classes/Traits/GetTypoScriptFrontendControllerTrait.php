@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Traits;
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -18,8 +19,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 trait GetTypoScriptFrontendControllerTrait
 {
-    protected TypoScriptFrontendController $typoscriptFrontendControllerObject;
-
     /**
      * Returns TSFE from GLOBALS
      * easy to manage the usage of GLOBALS TSFE
@@ -28,5 +27,10 @@ trait GetTypoScriptFrontendControllerTrait
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        return $this->getTypoScriptFrontendController()->cObj;
     }
 }

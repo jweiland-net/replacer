@@ -11,6 +11,8 @@ Version 3.0.0
 =============
 
 *   Add support for TYPO3 v12 LTS
+*   Better Search and Replace handling
+*   Documentation updated with several examples and upgrade notes.
 *   Updated Unit Tests and Functional Tests to TYPO3 Testing Framework
 
 Version 2.1.1

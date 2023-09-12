@@ -20,9 +20,9 @@ Code:
 ..  code-block:: typoscript
 
     config.tx_replacer {
-      enable_regex = 1
       search {
         10 = #(<p[^>]*>.*?)SEARCH(.*?<\/p>)#
+        10.enable_regex = 1
       }
 
       replace {
@@ -57,6 +57,7 @@ Code:
     config.tx_replacer {
       search {
         10 = /"\/?(fileadmin|typo3temp|uploads)/
+        10.enable_regex = 1
       }
 
       replace {
@@ -97,7 +98,6 @@ Code:
       }
 
       replace {
-        10 =
         10.stdWrap.field = title
       }
     }
@@ -143,7 +143,8 @@ Code:
       }
     }
 
-It also accepts the root key 10 in replacement with `current`. So the md5 hash of search root key will be replaced.
+We can replace the value in the search key with hash value of the search key by configuring the current property of
+stdWrap. Here is an example below.
 
 Code:
 
@@ -152,11 +153,12 @@ Code:
     config.tx_replacer {
       search {
         10 = hash value to be replaced
+        10.setContentToCurrent = 1
       }
 
       replace {
         # replacement will be md5 hash of search key - "hash value to be replaced"
-        10 = current
+        10.current = 1
         10.wrap = <strong>|</strong>
         10.hash = md5
       }
