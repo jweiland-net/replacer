@@ -13,7 +13,9 @@ namespace JWeiland\Replacer\Tests\Unit\Helper;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
 use JWeiland\Replacer\Helper\TypoScriptHelper;
+use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -22,6 +24,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ReplacerHelperTest extends FunctionalTestCase
 {
+    use SetUpFrontendSiteTrait;
+
     /**
      * @var ConfigurationManager|MockObject
      */
@@ -36,6 +40,11 @@ final class ReplacerHelperTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'));
+
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->setUpFrontendSite(1);
 
         $this->configurationManagerMock = $this->createMock(ConfigurationManager::class);
 
