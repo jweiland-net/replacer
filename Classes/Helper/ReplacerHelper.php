@@ -59,14 +59,14 @@ class ReplacerHelper
         foreach ($this->getReplaceConfigurationStorage($replacerTypoScriptConfiguration) as $replaceConfiguration) {
             if ($replaceConfiguration->isUseRegExp()) {
                 // replace using a regex as search pattern
-                $contentToReplace = preg_replace(
+                $contentToReplace = (string)preg_replace(
                     $replaceConfiguration->getSearchValue(),
                     $replaceConfiguration->getReplaceValue(),
                     $contentToReplace
                 );
             } else {
                 // replace using a regular strings as search pattern
-                $contentToReplace = str_replace(
+                $contentToReplace = (string)str_replace(
                     $replaceConfiguration->getSearchValue(),
                     $replaceConfiguration->getReplaceValue(),
                     $contentToReplace

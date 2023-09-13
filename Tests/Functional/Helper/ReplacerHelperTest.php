@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ReplacerHelperTest extends UnitTestCase
+final class ReplacerHelperTest extends FunctionalTestCase
 {
     /**
      * @var ConfigurationManager|MockObject
@@ -28,6 +28,10 @@ final class ReplacerHelperTest extends UnitTestCase
     protected $configurationManagerMock;
 
     protected ReplacerHelper $subject;
+
+    protected array $testExtensionsToLoad = [
+        'jweiland/replacer',
+    ];
 
     protected function setUp(): void
     {
