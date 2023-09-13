@@ -53,9 +53,9 @@ final class ReplacerHelperTest extends UnitTestCase
             'Replace values with regular expressions' => [
                 [
                     '10' => '/apple|raspberry/',
-                    '10.' => [ 'enable_regex' => '1'],
+                    '10.' => ['enable_regex' => '1'],
                     '20' => '/coke|sinalco/',
-                    '20.' => [ 'enable_regex' => '1'],
+                    '20.' => ['enable_regex' => '1'],
                 ],
                 ['10' => 'banana', '20' => 'pepsi'],
                 'contentToReplace' => 'Today some apple and coke. Tomorrow a raspberry cake and sinalco.',
@@ -64,8 +64,26 @@ final class ReplacerHelperTest extends UnitTestCase
             'Replace value with another value which will be hashed with stdWrap property "hash"' => [
                 ['10' => 'value to be replaced by a hashed value'],
                 ['10' => 'value to be hashed', '10.' => ['hash' => 'md5']],
-                'contentToReplace' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
+                'contentToReplace' => 'Test stdWrap "hash" property: "value to be replaced by a hashed value"',
                 'result' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
+            ],
+            'Use the search value, hash it and replace it' => [
+                ['10' => 'value to be hashed', '10.' => ['setContentToCurrent' => '1']],
+                ['10.' => ['current' => '1', 'hash' => 'md5']],
+                'contentToReplace' => 'Test stdWrap "hash" property: "value to be hashed"',
+                'result' => 'Test stdWrap "hash" property: "3074b9e3a338bda3e97c9f60263e308f"',
+            ],
+            'Search for page title and replace it with the nav_title' => [
+                ['10.' => ['field' => 'title']],
+                ['10.' => ['data' => 'FIELD:nav_title', 'wrap' => '<em>|</em>']],
+                'contentToReplace' => 'This is my first Startpage',
+                'result' => 'This is my first <em>Car</em>',
+            ],
+            'Replace ContentObject with replacement' => [
+                ['10.' => ['cObject' => 'TEXT', 'cObject.' => ['value' => 'WordPress']]],
+                ['10' => 'TYPO3'],
+                'contentToReplace' => 'WordPress is the best CMS',
+                'result' => 'TYPO3 is the best CMS',
             ],
         ];
     }
@@ -106,6 +124,12 @@ final class ReplacerHelperTest extends UnitTestCase
     {
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer($GLOBALS['TSFE']);
+        $GLOBALS['TSFE']->cObj->data = [
+            'uid' => 1,
+            'pid' => 0,
+            'title' => 'Startpage',
+            'nav_title' => 'Car',
+        ];
 
         // Set the configuration
         $configProperty = new \ReflectionProperty($GLOBALS['TSFE'], 'config');
