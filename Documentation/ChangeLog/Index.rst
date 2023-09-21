@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 3.0.1
+=============
+
+*   [BUGFIX] Middleware called in the wrong position where TSFE not initialized
+
 Version 3.0.0
 =============
 
