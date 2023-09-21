@@ -14,10 +14,10 @@ return [
         'jweiland/replacer/replace-content' => [
             'target' => ReplaceContentMiddleware::class,
             'after' => [
-                'typo3/cms-frontend/maintenance-mode',
+                'typo3/cms-frontend/tsfe',
             ],
             'before' => [
-                'typo3/cms-core/request-token-middleware',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
     ],
