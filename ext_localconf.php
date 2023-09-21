@@ -1,4 +1,6 @@
-<?php defined('TYPO3') or die();
+<?php
+
+defined('TYPO3') or die();
 
 use JWeiland\Replacer\Hook\TypoScriptFrontendControllerHook;
 use TYPO3\CMS\Core\Information\Typo3Version;
