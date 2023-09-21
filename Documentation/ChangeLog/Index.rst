@@ -7,6 +7,15 @@
 ChangeLog
 =========
 
+Version 3.0.2
+=============
+
+*   [TASK] Update .editorconfig
+*   [TASK] Rename LICENSE.txt to just LICENSE
+*   [TASK] Add directories to exclude to .gitattributes
+*   [TASK] Move TYPO3 const check into new line of ext_localconf.php
+*   [TASK] Remove unneeded properties from ext_emconf.php
+
 Version 3.0.1
 =============
 
