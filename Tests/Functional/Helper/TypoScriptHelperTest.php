@@ -91,7 +91,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
             '',
             $this->subject->findValueOrConfiguration(
                 [
-                    20 => 'TEXT'
+                    20 => 'TEXT',
                 ],
                 10
             )
@@ -110,7 +110,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                     10 => 'TEXT',
                     '10.' => [
                         'value' => 'foo bar',
-                    ]
+                    ],
                 ],
                 10
             )
@@ -130,9 +130,9 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     '10.' => [
                         'value' => 'foo bar',
-                    ]
+                    ],
                 ],
-                '10.'
+                '10.',
             )
         );
     }
@@ -147,7 +147,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                 ],
-                '10.'
+                '10.',
             )
         );
     }
@@ -162,7 +162,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                     '10.' => [
-                        'enable_regex' => '0'
+                        'enable_regex' => '0',
                     ],
                 ],
                 '10.'
@@ -181,7 +181,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                     '10.' => [
-                        'wrap' => '<b>|</b>'
+                        'wrap' => '<b>|</b>',
                     ],
                 ],
                 '10.'
@@ -199,7 +199,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                     '10.' => [
-                        'enable_regex' => '1'
+                        'enable_regex' => '1',
                     ],
                 ],
                 '10.'
@@ -217,7 +217,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                     '10.' => [
-                        'enable_regex' => '1'
+                        'enable_regex' => '1',
                     ],
                 ],
                 '10.'
@@ -234,7 +234,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
             $this->subject->hasBaseEntry(
                 [
                     '10.' => [
-                        'wrap' => '<b>|</b>'
+                        'wrap' => '<b>|</b>',
                     ],
                 ],
                 '10.'
@@ -252,7 +252,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                     '10.' => [
-                        'wrap' => '<b>|</b>'
+                        'wrap' => '<b>|</b>',
                     ],
                 ],
                 '10.'
@@ -269,7 +269,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
             $this->subject->hasReplaceEntry(
                 [
                     '10.' => [
-                        'wrap' => '<b>|</b>'
+                        'wrap' => '<b>|</b>',
                     ],
                 ],
                 '10.'
@@ -287,7 +287,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     10 => 'TEXT',
                     '10.' => [
-                        'wrap' => '<b>|</b>'
+                        'wrap' => '<b>|</b>',
                     ],
                 ],
                 20
@@ -317,7 +317,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
             $this->subject->applyStdWrapProperties(
                 'apple',
                 [
-                    'wrap' => '<b>|</b>'
+                    'wrap' => '<b>|</b>',
                 ]
             )
         );
