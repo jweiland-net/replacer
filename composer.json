@@ -26,6 +26,11 @@
 		"typo3/coding-standards": "^0.6",
 		"typo3/testing-framework": "^7.0.2"
 	},
+	"replace": {
+		"phorax/ja-replacer": "*",
+		"typo3-ter/ja-replacer": "*",
+		"typo3-ter/replacer": "self.version"
+	},
 	"conflict": {
 		"sgalinski/scriptmerger": "<7.0.0"
 	},
