@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Tests\Functional\Enumeration;
 
-
 use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -67,7 +66,6 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
             (string)$subject
         );
     }
-
 
     /**
      * @test

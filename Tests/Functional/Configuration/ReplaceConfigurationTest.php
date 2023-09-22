@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Tests\Functional\Configuration;
 
-
 use JWeiland\Replacer\Configuration\ReplaceConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
