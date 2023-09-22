@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 3.0.3
+=============
+
+*   [TASK] Add a lot more func. tests
+
 Version 3.0.2
 =============
 
