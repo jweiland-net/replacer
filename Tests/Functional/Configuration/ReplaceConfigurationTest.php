@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Replacer\Tests\Functional\Helper;
+namespace JWeiland\Replacer\Tests\Unit\Helper;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
 use JWeiland\Replacer\Helper\TypoScriptHelper;
