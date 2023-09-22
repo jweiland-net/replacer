@@ -170,7 +170,6 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-
     /**
      * @test
      */
