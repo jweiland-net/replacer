@@ -29,7 +29,7 @@ trait GetTypoScriptFrontendControllerTrait
         return $GLOBALS['TSFE'];
     }
 
-    protected function getContentObjectRenderer(): ContentObjectRenderer
+    protected function getContentObjectRenderer(): ?ContentObjectRenderer
     {
         return $this->getTypoScriptFrontendController()->cObj;
     }
