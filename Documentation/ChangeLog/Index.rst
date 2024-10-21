@@ -14,7 +14,6 @@ Version 3.0.4
 *   [TASK] Formating code lint issues
 *   [BUGFIX] Handled Type Error when cObj is not ready
 
-
 Version 3.0.3
 =============
 
