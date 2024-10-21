@@ -206,7 +206,7 @@ class ReplacerHelper
 
     protected function getConfigurationFor(
         array $replacerConfiguration,
-        ConfigurationTypeEnumeration $configurationType,
+        ConfigurationTypeEnumeration $configurationType
     ): array {
         try {
             $typoScriptConfiguration = ArrayUtility::getValueByPath(
