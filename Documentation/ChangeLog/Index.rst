@@ -7,6 +7,14 @@
 ChangeLog
 =========
 
+Version 3.0.4
+=============
+
+*   [TASK] Updated TestSuite for GitHub
+*   [TASK] Formating code lint issues
+*   [BUGFIX] Handled Type Error when cObj is not ready
+
+
 Version 3.0.3
 =============
 
