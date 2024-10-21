@@ -126,7 +126,7 @@ final class ReplacerHelperTest extends FunctionalTestCase
 
         self::assertSame(
             $result,
-            $actualResult
+            $actualResult,
         );
     }
 

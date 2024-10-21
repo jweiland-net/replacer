@@ -34,7 +34,7 @@ class ReplaceContentUnCachedTest extends FunctionalTestCase
             [
                 'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
                 'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript',
-            ]
+            ],
         );
     }
 
@@ -44,7 +44,7 @@ class ReplaceContentUnCachedTest extends FunctionalTestCase
     public function frontendRequestDoNotReplacesContentOnTypo3Error(): void
     {
         $response = self::executeFrontendSubRequest(
-            new InternalRequest('https://website.local/site-not-found')
+            new InternalRequest('https://website.local/site-not-found'),
         );
 
         $body = (string)$response->getBody();
@@ -53,11 +53,11 @@ class ReplaceContentUnCachedTest extends FunctionalTestCase
         // which will result in an uninitialized TSFE or methods on null exception
         self::assertStringNotContainsString(
             'TSFE',
-            $body
+            $body,
         );
         self::assertStringNotContainsString(
             'null',
-            $body
+            $body,
         );
     }
 
@@ -67,14 +67,14 @@ class ReplaceContentUnCachedTest extends FunctionalTestCase
     public function frontendRequestReplacesContent(): void
     {
         $response = self::executeFrontendSubRequest(
-            new InternalRequest('https://website.local/')
+            new InternalRequest('https://website.local/'),
         );
 
         $body = (string)$response->getBody();
 
         self::assertStringContainsString(
             'I like fruits',
-            $body
+            $body,
         );
     }
 }
