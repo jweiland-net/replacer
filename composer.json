@@ -1,10 +1,14 @@
 {
 	"name": "jweiland/replacer",
-	"type": "typo3-cms-extension",
 	"description": "Replaces string patterns from the page. You can use it to replace URLs for Content Delivery Network (CDN).",
 	"license": "GPL-2.0-or-later",
-	"keywords": ["typo3", "TYPO3 CMS", "jw", "replacer"],
-	"homepage": "https://jweiland.net",
+	"type": "typo3-cms-extension",
+	"keywords": [
+		"typo3",
+		"TYPO3 CMS",
+		"jw",
+		"replacer"
+	],
 	"authors": [
 		{
 			"name": "Hoja Mustaffa Abdul Latheef",
@@ -17,17 +21,20 @@
 			"role": "Developer"
 		}
 	],
+	"homepage": "https://jweiland.net",
 	"support": {
 		"email": "projects@jweiland.net",
 		"issues": "https://github.com/jweiland-net/replacer/issues",
 		"source": "https://github.com/jweiland-net/replacer"
 	},
 	"require": {
-		"typo3/cms-core": "^11.5.30 || ^12.4.4"
+		"typo3/cms-core": "^11.5.37 || ^12.4.15"
 	},
 	"require-dev": {
+		"ergebnis/composer-normalize": "~2.42.0",
 		"friendsofphp/php-cs-fixer": "^3.14",
 		"phpunit/phpunit": "^9.6",
+		"roave/security-advisories": "dev-latest",
 		"typo3/coding-standards": "^0.6",
 		"typo3/testing-framework": "^7.0.2"
 	},
@@ -50,13 +57,14 @@
 		}
 	},
 	"config": {
-		"sort-packages": true,
-		"vendor-dir": ".Build/vendor",
-		"bin-dir": ".Build/bin",
 		"allow-plugins": {
-			"typo3/cms-composer-installers": true,
-			"typo3/class-alias-loader": true
-		}
+			"ergebnis/composer-normalize": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
+		"bin-dir": ".Build/bin",
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor"
 	},
 	"extra": {
 		"typo3/cms": {
