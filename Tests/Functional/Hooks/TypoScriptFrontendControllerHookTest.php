@@ -33,7 +33,7 @@ class TypoScriptFrontendControllerHookTest extends FunctionalTestCase
             [
                 'EXT:replacer/Tests/Functional/Fixtures/basic_template.typoscript',
                 'EXT:replacer/Tests/Functional/Fixtures/user_int.typoscript',
-            ]
+            ],
         );
     }
 
@@ -44,7 +44,7 @@ class TypoScriptFrontendControllerHookTest extends FunctionalTestCase
     {
         self::assertEquals(
             '<p>I like fruits</p><p>This is MD5 Hash Example: 0800fc577294c34e0b28ad2839435945</p><p>Hello world</p>',
-            $this->getFrontendResponse(1)->getContent()
+            $this->getFrontendResponse(1)->getContent(),
         );
     }
 }

@@ -37,7 +37,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
     {
         self::assertSame(
             'search.',
-            (string)$this->subject
+            (string)$this->subject,
         );
     }
 
@@ -50,7 +50,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
 
         self::assertSame(
             'search.',
-            (string)$subject
+            (string)$subject,
         );
     }
 
@@ -63,7 +63,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
 
         self::assertSame(
             'replace.',
-            (string)$subject
+            (string)$subject,
         );
     }
 

@@ -53,7 +53,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
     {
         self::assertSame(
             $expected,
-            $this->subject->hasStdWrapProperties($config, $key)
+            $this->subject->hasStdWrapProperties($config, $key),
         );
     }
 
@@ -78,7 +78,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
     {
         self::assertSame(
             $expected,
-            $this->subject->getStdWrapProperties($config, $key)
+            $this->subject->getStdWrapProperties($config, $key),
         );
     }
 
@@ -93,8 +93,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     20 => 'TEXT',
                 ],
-                10
-            )
+                10,
+            ),
         );
     }
 
@@ -112,8 +112,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'value' => 'foo bar',
                     ],
                 ],
-                10
-            )
+                10,
+            ),
         );
     }
 
@@ -133,7 +133,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                     ],
                 ],
                 '10.',
-            )
+            ),
         );
     }
 
@@ -148,7 +148,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                     10 => 'TEXT',
                 ],
                 '10.',
-            )
+            ),
         );
     }
 
@@ -165,8 +165,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'enable_regex' => '0',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -183,8 +183,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'wrap' => '<b>|</b>',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -201,8 +201,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'enable_regex' => '1',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -219,8 +219,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'enable_regex' => '1',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -236,8 +236,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'wrap' => '<b>|</b>',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -254,8 +254,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'wrap' => '<b>|</b>',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -271,8 +271,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'wrap' => '<b>|</b>',
                     ],
                 ],
-                '10.'
-            )
+                '10.',
+            ),
         );
     }
 
@@ -289,8 +289,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                         'wrap' => '<b>|</b>',
                     ],
                 ],
-                20
-            )
+                20,
+            ),
         );
     }
 
@@ -317,8 +317,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 'apple',
                 [
                     'wrap' => '<b>|</b>',
-                ]
-            )
+                ],
+            ),
         );
     }
 }
