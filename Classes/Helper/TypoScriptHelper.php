@@ -102,6 +102,11 @@ class TypoScriptHelper
 
     public function applyStdWrapProperties(string $content, array $stdWrapConfiguration): string
     {
-        return $this->getContentObjectRenderer()->stdWrap($content, $stdWrapConfiguration);
+        $contentObjectRenderer = $this->getContentObjectRenderer();
+        if ($contentObjectRenderer === null) {
+            return $content;
+        }
+
+        return $contentObjectRenderer->stdWrap($content, $stdWrapConfiguration);
     }
 }
