@@ -36,7 +36,7 @@ class TypoScriptFrontendControllerHook
         }
 
         $typoScriptFrontendController->content = $this->replacerHelper->replace(
-            $typoScriptFrontendController->content
+            $typoScriptFrontendController->content,
         );
     }
 }
