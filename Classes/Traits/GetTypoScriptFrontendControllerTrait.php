@@ -31,6 +31,12 @@ trait GetTypoScriptFrontendControllerTrait
 
     protected function getContentObjectRenderer(): ?ContentObjectRenderer
     {
-        return $this->getTypoScriptFrontendController()->cObj;
+        $tsfe = $this->getTypoScriptFrontendController();
+
+        if (!$tsfe->cObj) {
+            return null;
+        }
+
+        return $tsfe->cObj;
     }
 }
