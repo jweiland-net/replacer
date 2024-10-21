@@ -39,9 +39,9 @@ class ReplaceContentMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if (!$this->getTypoScriptFrontendController()->isINTincScript()
-            || $response instanceof NullResponse
+        if ($response instanceof NullResponse
             || $this->getContentObjectRenderer() === null
+            || !$this->getTypoScriptFrontendController()->isINTincScript()
         ) {
             return $response;
         }
