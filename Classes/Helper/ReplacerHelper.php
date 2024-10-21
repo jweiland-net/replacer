@@ -53,7 +53,7 @@ class ReplacerHelper
         $typoScriptFrontendController = $this->getTypoScriptFrontendController();
         $replacerTypoScriptConfiguration = $this->getValueByPath(
             $typoScriptFrontendController->config,
-            'config/tx_replacer.'
+            'config/tx_replacer.',
         );
 
         foreach ($this->getReplaceConfigurationStorage($replacerTypoScriptConfiguration) as $replaceConfiguration) {
@@ -62,14 +62,14 @@ class ReplacerHelper
                 $contentToReplace = (string)preg_replace(
                     $replaceConfiguration->getSearchValue(),
                     $replaceConfiguration->getReplaceValue(),
-                    $contentToReplace
+                    $contentToReplace,
                 );
             } else {
                 // replace using a regular strings as search pattern
                 $contentToReplace = (string)str_replace(
                     $replaceConfiguration->getSearchValue(),
                     $replaceConfiguration->getReplaceValue(),
-                    $contentToReplace
+                    $contentToReplace,
                 );
             }
         }
@@ -86,12 +86,12 @@ class ReplacerHelper
 
         $searchTypoScriptConfiguration = $this->getConfigurationFor(
             $replacerTypoScriptConfiguration,
-            ConfigurationTypeEnumeration::cast('search')
+            ConfigurationTypeEnumeration::cast('search'),
         );
 
         $replaceTypoScriptConfiguration = $this->getConfigurationFor(
             $replacerTypoScriptConfiguration,
-            ConfigurationTypeEnumeration::cast('replace')
+            ConfigurationTypeEnumeration::cast('replace'),
         );
 
         foreach ($searchTypoScriptConfiguration as $key => $valueOrConfiguration) {
@@ -111,12 +111,12 @@ class ReplacerHelper
 
             // Add regular expression information
             $replaceConfiguration->setUseRegExp(
-                $this->typoScriptHelper->isRegExpEnabled($searchTypoScriptConfiguration, $key)
+                $this->typoScriptHelper->isRegExpEnabled($searchTypoScriptConfiguration, $key),
             );
 
             // Add search value
             $replaceConfiguration->setSearchValue(
-                $this->getProcessedValue($valueOrConfiguration, $searchTypoScriptConfiguration, $key)
+                $this->getProcessedValue($valueOrConfiguration, $searchTypoScriptConfiguration, $key),
             );
 
             // Add replace value
@@ -124,8 +124,8 @@ class ReplacerHelper
                 $this->getProcessedValue(
                     $this->typoScriptHelper->findValueOrConfiguration($replaceTypoScriptConfiguration, $key),
                     $replaceTypoScriptConfiguration,
-                    $key
-                )
+                    $key,
+                ),
             );
 
             $replacerConfigurationStorage->attach($replaceConfiguration);
@@ -148,7 +148,7 @@ class ReplacerHelper
             if ($this->typoScriptHelper->hasStdWrapProperties($typoScriptConfiguration, $key)) {
                 $value = $this->typoScriptHelper->applyStdWrapProperties(
                     $valueOrConfiguration,
-                    $this->typoScriptHelper->getStdWrapProperties($typoScriptConfiguration, $key)
+                    $this->typoScriptHelper->getStdWrapProperties($typoScriptConfiguration, $key),
                 );
             } else {
                 $value = $valueOrConfiguration;
@@ -156,7 +156,7 @@ class ReplacerHelper
         } else {
             $value = $this->typoScriptHelper->applyStdWrapProperties(
                 '',
-                $valueOrConfiguration
+                $valueOrConfiguration,
             );
         }
 
@@ -168,13 +168,13 @@ class ReplacerHelper
 
         $contentForProcessing = $this->getValueByPath(
             $processingConfig,
-            'search./' . $configurationSearchPointer
+            'search./' . $configurationSearchPointer,
         );
 
         if (ArrayUtility::isValidPath($processingConfig, 'replace./' . $configurationSearchPointer)) {
             $replaceContentForProcessing = (string)$this->getValueByPath(
                 $processingConfig,
-                'replace./' . $configurationSearchPointer
+                'replace./' . $configurationSearchPointer,
             );
             // if the replace content for processing is `current` then take the value from search array key
             if ($replaceContentForProcessing === 'current') {
@@ -211,7 +211,7 @@ class ReplacerHelper
         try {
             $typoScriptConfiguration = ArrayUtility::getValueByPath(
                 $replacerConfiguration,
-                (string)$configurationType
+                (string)$configurationType,
             );
 
             // We need correct sorting: 10, 10., 20, 30, 30.

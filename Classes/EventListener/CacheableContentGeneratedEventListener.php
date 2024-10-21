@@ -42,7 +42,7 @@ final class CacheableContentGeneratedEventListener
         }
 
         $event->getController()->content = $this->replacerHelper->replace(
-            $event->getController()->content
+            $event->getController()->content,
         );
     }
 }
