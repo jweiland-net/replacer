@@ -14,6 +14,8 @@ namespace JWeiland\Replacer\Tests\Functional\Helper;
 use JWeiland\Replacer\Helper\ReplacerHelper;
 use JWeiland\Replacer\Helper\TypoScriptHelper;
 use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -54,7 +56,7 @@ final class ReplacerHelperTest extends FunctionalTestCase
     /**
      * @returnDataProvider
      */
-    public function validReplacements(): array
+    public static function validReplacements(): array
     {
         return [
             'Replace values with simple text replacement' => [
@@ -101,10 +103,8 @@ final class ReplacerHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validReplacements
-     */
+    #[Test]
+    #[DataProvider('validReplacements')]
     public function replaceContentWithValidSearchAndReplaceValues(
         array $search,
         array $replacement,
