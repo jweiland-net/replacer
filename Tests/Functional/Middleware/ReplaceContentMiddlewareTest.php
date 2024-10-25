@@ -14,7 +14,6 @@ namespace JWeiland\Replacer\Tests\Functional\Middleware;
 use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
