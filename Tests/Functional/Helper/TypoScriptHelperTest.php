@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Functional\Helper;
 
 use JWeiland\Replacer\Helper\TypoScriptHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -31,7 +33,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         $this->subject = new TypoScriptHelper();
     }
 
-    public function hasStdWrapPropertiesDataProvider(): array
+    public static function hasStdWrapPropertiesDataProvider(): array
     {
         return [
             'Check TS config with int key' => [['10.' => ['wrap' => '<b>|</b>']], 10, true],
@@ -44,11 +46,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider hasStdWrapPropertiesDataProvider
-     */
+    #[Test]
+    #[DataProvider('hasStdWrapPropertiesDataProvider')]
     public function hasStdWrapPropertiesWillReturnFalse(array $config, $key, bool $expected): void
     {
         self::assertSame(
@@ -57,7 +56,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    public function getStdWrapPropertiesDataProvider(): array
+    public static function getStdWrapPropertiesDataProvider(): array
     {
         return [
             'TS config with int key' => [['10.' => ['wrap' => '<b>|</b>']], 10, ['wrap' => '<b>|</b>']],
@@ -69,11 +68,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider getStdWrapPropertiesDataProvider
-     */
+    #[Test]
+    #[DataProvider('getStdWrapPropertiesDataProvider')]
     public function getStdWrapPropertiesWillReturnFalse(array $config, $key, array $expected): void
     {
         self::assertSame(
