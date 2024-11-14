@@ -13,11 +13,13 @@ namespace JWeiland\Replacer\Middleware;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
 use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
+use MongoDB\Driver\Server;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\NullResponse;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Stream;
 
 /**
@@ -31,18 +33,18 @@ class ReplaceContentMiddleware implements MiddlewareInterface
 
     private ReplacerHelper $replacerHelper;
 
-    public function __construct(ReplacerHelper $replacerHelper)
+    private ServerRequestInterface $request;
+
+    public function __construct(ReplacerHelper $replacerHelper, ServerRequest $request)
     {
         $this->replacerHelper = $replacerHelper;
+        $this->request = $request;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if ($response instanceof NullResponse
-            || $this->getContentObjectRenderer() === null
-            || !$this->getTypoScriptFrontendController()->isINTincScript()
-        ) {
+        if ($response instanceof NullResponse || $this->getContentObjectRenderer() === null) {
             return $response;
         }
 
@@ -51,5 +53,10 @@ class ReplaceContentMiddleware implements MiddlewareInterface
         $body->write($content);
 
         return $response->withBody($body);
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

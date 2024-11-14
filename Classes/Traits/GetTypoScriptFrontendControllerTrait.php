@@ -19,6 +19,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 trait GetTypoScriptFrontendControllerTrait
 {
+    abstract protected function getRequest();
+
     /**
      * Returns TSFE from GLOBALS
      * easy to manage the usage of GLOBALS TSFE
@@ -26,16 +28,18 @@ trait GetTypoScriptFrontendControllerTrait
      */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
+        $tsfeFromRequest = $this->getRequest()->getAttribute('frontend.controller');
+        if ($this->getRequest()->getAttribute('frontend.controller') instanceof TypoScriptFrontendController) {
+            return $tsfeFromRequest;
+        }
+
         return $GLOBALS['TSFE'];
     }
 
     protected function getContentObjectRenderer(): ?ContentObjectRenderer
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe && isset($tsfe->cObj) && $tsfe->cObj instanceof ContentObjectRenderer) {
-            return $tsfe->cObj;
-        }
 
-        return null;
+        return $tsfe->cObj ?? null;
     }
 }
