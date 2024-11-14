@@ -12,10 +12,19 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Helper;
 
 use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 class TypoScriptHelper
 {
     use GetTypoScriptFrontendControllerTrait;
+
+    protected ServerRequestInterface $request;
+
+    public function __construct(ServerRequest $request)
+    {
+        $this->request = $request;
+    }
 
     /**
      * @param string|int $key
@@ -108,5 +117,10 @@ class TypoScriptHelper
         }
 
         return $contentObjectRenderer->stdWrap($content, $stdWrapConfiguration);
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

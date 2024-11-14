@@ -14,6 +14,8 @@ namespace JWeiland\Replacer\Helper;
 use JWeiland\Replacer\Configuration\ReplaceConfiguration;
 use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,9 +30,12 @@ class ReplacerHelper
 
     protected TypoScriptHelper $typoScriptHelper;
 
-    public function __construct(TypoScriptHelper $typoScriptHelper)
+    protected ServerRequestInterface $request;
+
+    public function __construct(TypoScriptHelper $typoScriptHelper, ServerRequest $request)
     {
         $this->typoScriptHelper = $typoScriptHelper;
+        $this->request = $request;
     }
 
     /**
@@ -139,10 +144,10 @@ class ReplacerHelper
      * Return value processed, if is string and stdWrap configuration was found
      * Return a new value which was build by just stdWrap configuration
      *
-     * @param string|array $valueOrConfiguration
+     * @param array|string $valueOrConfiguration
      * @param string|int $key
      */
-    protected function getProcessedValue($valueOrConfiguration, array $typoScriptConfiguration, $key): string
+    protected function getProcessedValue(array|string $valueOrConfiguration, array $typoScriptConfiguration, $key): string
     {
         if (is_string($valueOrConfiguration)) {
             if ($this->typoScriptHelper->hasStdWrapProperties($typoScriptConfiguration, $key)) {
@@ -183,6 +188,7 @@ class ReplacerHelper
 
             return $replaceContentForProcessing;
         }
+
         return $contentForProcessing;
     }
 
@@ -240,5 +246,10 @@ class ReplacerHelper
     protected function getFreshReplaceConfiguration(): ReplaceConfiguration
     {
         return GeneralUtility::makeInstance(ReplaceConfiguration::class);
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }
