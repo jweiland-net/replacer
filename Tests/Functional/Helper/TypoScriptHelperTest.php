@@ -14,6 +14,11 @@ namespace JWeiland\Replacer\Tests\Functional\Helper;
 use JWeiland\Replacer\Helper\TypoScriptHelper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -21,6 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class TypoScriptHelperTest extends FunctionalTestCase
 {
     protected TypoScriptHelper $subject;
+    protected ServerRequestInterface $request;
 
     protected array $testExtensionsToLoad = [
         'jweiland/replacer',
@@ -31,6 +37,12 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         parent::setUp();
 
         $this->subject = new TypoScriptHelper();
+
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $this->request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 
     public static function hasStdWrapPropertiesDataProvider(): array
@@ -305,7 +317,12 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         $controllerMock = self::createMock(TypoScriptFrontendController::class);
         $controllerMock->cObj = $contentObjectRendererMock;
 
-        $GLOBALS['TSFE'] = $controllerMock;
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $this->request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.controller', $controllerMock)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         self::assertSame(
             '<b>apple</b>',
@@ -314,6 +331,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     'wrap' => '<b>|</b>',
                 ],
+                $this->request
             ),
         );
     }

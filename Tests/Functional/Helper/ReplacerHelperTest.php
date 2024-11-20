@@ -17,7 +17,11 @@ use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -31,9 +35,11 @@ final class ReplacerHelperTest extends FunctionalTestCase
     /**
      * @var ConfigurationManager|MockObject
      */
-    protected $configurationManagerMock;
+    protected MockObject $configurationManagerMock;
 
     protected ReplacerHelper $subject;
+
+    protected ServerRequestInterface $request;
 
     protected array $testExtensionsToLoad = [
         'jweiland/replacer',
@@ -51,6 +57,18 @@ final class ReplacerHelperTest extends FunctionalTestCase
         $this->configurationManagerMock = $this->createMock(ConfigurationManager::class);
 
         $this->subject = new ReplacerHelper(new TypoScriptHelper());
+
+        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
+        $controllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $controllerMock->cObj = $contentObjectRendererMock;
+
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+
+        $this->request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.controller', $controllerMock)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 
     /**
@@ -122,7 +140,7 @@ final class ReplacerHelperTest extends FunctionalTestCase
 
         $this->createFrontendControllerMock($config);
 
-        $actualResult = $this->subject->replace($contentToReplace);
+        $actualResult = $this->subject->replace($contentToReplace, $this->request);
 
         self::assertSame(
             $result,
@@ -135,9 +153,9 @@ final class ReplacerHelperTest extends FunctionalTestCase
      */
     protected function createFrontendControllerMock(array $config = []): void
     {
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->cObj = new ContentObjectRenderer($GLOBALS['TSFE']);
-        $GLOBALS['TSFE']->cObj->data = [
+        $controllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $controllerMock->cObj = new ContentObjectRenderer($controllerMock);
+        $controllerMock->cObj->data = [
             'uid' => 1,
             'pid' => 0,
             'title' => 'Startpage',
@@ -145,8 +163,18 @@ final class ReplacerHelperTest extends FunctionalTestCase
         ];
 
         // Set the configuration
-        $configProperty = new \ReflectionProperty($GLOBALS['TSFE'], 'config');
+        $configProperty = new \ReflectionProperty($controllerMock, 'config');
         $configProperty->setAccessible(true);
-        ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TSFE']->config, $config);
+        ArrayUtility::mergeRecursiveWithOverrule($controllerMock->config, $config);
+
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+
+        $controllerMock->config = $config;
+
+        $this->request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.controller', $controllerMock)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 }
