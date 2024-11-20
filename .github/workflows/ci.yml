@@ -23,9 +23,6 @@ jobs:
       - name: 'Lint PHP'
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
 
-      - name: 'PHP Stan'
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan
-
       - name: 'Install testing system'
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s composerUpdate
 
@@ -37,6 +34,9 @@ jobs:
 
       - name: 'CGL'
         run: Build/Scripts/runTests.sh -n -p ${{ matrix.php }} -s cgl
+
+      - name: 'phpstan'
+        run: Build/Scripts/runTests.sh -n -p ${{ matrix.php }} -s phpstan
 
       - name: 'Execute functional tests'
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mysql -s functional
