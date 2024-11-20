@@ -12,15 +12,13 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Middleware;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
-use JWeiland\Replacer\Traits\GetTypoScriptFrontendControllerTrait;
-use MongoDB\Driver\Server;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\NullResponse;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Middleware to replace content using TSFE.
@@ -29,34 +27,34 @@ use TYPO3\CMS\Core\Http\Stream;
  */
 class ReplaceContentMiddleware implements MiddlewareInterface
 {
-    use GetTypoScriptFrontendControllerTrait;
-
     private ReplacerHelper $replacerHelper;
 
-    private ServerRequestInterface $request;
-
-    public function __construct(ReplacerHelper $replacerHelper, ServerRequest $request)
+    public function __construct(ReplacerHelper $replacerHelper)
     {
         $this->replacerHelper = $replacerHelper;
-        $this->request = $request;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if ($response instanceof NullResponse || $this->getContentObjectRenderer() === null) {
+        if ($response instanceof NullResponse || $this->getContentObjectRenderer($request) === null) {
             return $response;
         }
 
-        $content = $this->replacerHelper->replace((string)$response->getBody());
+        $content = $this->replacerHelper->replace((string)$response->getBody(), $request);
         $body = new Stream('php://temp', 'rw');
         $body->write($content);
 
         return $response->withBody($body);
     }
 
-    protected function getRequest(): ServerRequestInterface
+    protected function getContentObjectRenderer(ServerRequestInterface $request): ?ContentObjectRenderer
     {
-        return $this->request;
+        $tsfeController = $request->getAttribute('frontend.controller');
+        if (isset($tsfeController->cObj) && $tsfeController->cObj instanceof ContentObjectRenderer) {
+            return $tsfeController->cObj;
+        }
+
+        return null;
     }
 }
