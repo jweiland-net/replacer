@@ -23,6 +23,9 @@ jobs:
       - name: 'Lint PHP'
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
 
+      - name: 'PHP Stan'
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan
+
       - name: 'Install testing system'
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s composerUpdate
 
