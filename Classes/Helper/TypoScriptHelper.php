@@ -12,8 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Helper;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class TypoScriptHelper
 {
