@@ -18,6 +18,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -48,13 +49,24 @@ class ReplaceContentMiddleware implements MiddlewareInterface
         return $response->withBody($body);
     }
 
-    protected function getContentObjectRenderer(ServerRequestInterface $request): ?ContentObjectRenderer
+    protected function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
     {
+        // Retrieve the TypoScriptFrontendController instance from the request
         $tsfeController = $request->getAttribute('frontend.controller');
-        if (isset($tsfeController->cObj) && $tsfeController->cObj instanceof ContentObjectRenderer) {
-            return $tsfeController->cObj;
-        }
 
-        return null;
+        // Create a new instance of ContentObjectRenderer
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+
+        // Associate the ContentObjectRenderer with the TypoScriptFrontendController
+        $cObj->setFrontendController($tsfeController);
+
+        // Set the request in the ContentObjectRenderer
+        $cObj->setRequest($request);
+
+        // Initialize the ContentObjectRenderer with the page record
+        $pageRecord = $request->getAttribute('frontend.page.information')->getPageRecord();
+        $cObj->start($pageRecord, 'pages');
+
+        return $cObj;
     }
 }
