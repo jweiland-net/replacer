@@ -7,6 +7,14 @@
 ChangeLog
 =========
 
+Version 4.0.0
+=============
+
+*   [TASK] Add support for TYPO3 v13 LTS
+*   [TASK] Remove support for older TYPO3 versions
+*   [TASK] Test Suite Updated
+*   [TASK] Code optimizations and standards applied
+
 Version 3.0.4
 =============
 
