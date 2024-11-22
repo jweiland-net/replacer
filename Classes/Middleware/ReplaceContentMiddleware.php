@@ -33,7 +33,7 @@ class ReplaceContentMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if ($response instanceof NullResponse || $this->getContentObjectRenderer($request) === null) {
+        if ($response instanceof NullResponse) {
             return $response;
         }
 
