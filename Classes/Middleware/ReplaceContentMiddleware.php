@@ -28,12 +28,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class ReplaceContentMiddleware implements MiddlewareInterface
 {
-    private ReplacerHelper $replacerHelper;
-
-    public function __construct(ReplacerHelper $replacerHelper)
-    {
-        $this->replacerHelper = $replacerHelper;
-    }
+    public function __construct(protected ReplacerHelper $replacerHelper) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -55,10 +50,7 @@ class ReplaceContentMiddleware implements MiddlewareInterface
         $tsfeController = $request->getAttribute('frontend.controller');
 
         // Create a new instance of ContentObjectRenderer
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-
-        // Associate the ContentObjectRenderer with the TypoScriptFrontendController
-        $cObj->setFrontendController($tsfeController);
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfeController);
 
         // Set the request in the ContentObjectRenderer
         $cObj->setRequest($request);
