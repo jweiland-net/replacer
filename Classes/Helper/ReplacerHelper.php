@@ -14,7 +14,6 @@ namespace JWeiland\Replacer\Helper;
 use JWeiland\Replacer\Configuration\ReplaceConfiguration;
 use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
