@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Functional\Enumeration;
 
 use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -30,9 +31,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
         $this->subject = new ConfigurationTypeEnumeration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurationTypeAsStringWillReturnDefaultValue(): void
     {
         self::assertSame(
@@ -41,9 +40,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueToSearchWillAppendDot(): void
     {
         $subject = new ConfigurationTypeEnumeration('search');
@@ -54,9 +51,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueToReplaceWillAppendDot(): void
     {
         $subject = new ConfigurationTypeEnumeration('replace');
@@ -67,9 +62,7 @@ final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setUnknownValueWillThrowException(): void
     {
         self::expectException(InvalidEnumerationValueException::class);

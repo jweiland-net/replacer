@@ -92,9 +92,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findValueOrConfigurationWillReturnEmptyString(): void
     {
         self::assertSame(
@@ -108,9 +106,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findValueOrConfigurationWillReturnBaseNode(): void
     {
         self::assertSame(
@@ -127,9 +123,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findValueOrConfigurationWillReturnProperties(): void
     {
         self::assertSame(
@@ -147,9 +141,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isRegExpEnabledOnBaseNodeWillReturnFalse(): void
     {
         self::assertFalse(
@@ -162,9 +154,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isRegExpEnabledWithDisabledRegExWillReturnFalse(): void
     {
         self::assertFalse(
@@ -180,9 +170,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isRegExpEnabledWithoutRegExPropertyWillReturnFalse(): void
     {
         self::assertFalse(
@@ -198,9 +186,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isRegExpEnabledWithActivatedRegExWillReturnTrue(): void
     {
         self::assertTrue(
@@ -216,9 +202,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasBaseEntryWillReturnTrue(): void
     {
         self::assertTrue(
@@ -234,9 +218,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasBaseEntryWillReturnFalse(): void
     {
         self::assertFalse(
@@ -251,9 +233,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReplaceEntryWithBaseNodeWillReturnTrue(): void
     {
         self::assertTrue(
@@ -269,9 +249,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReplaceEntryWithoutBaseNodeWillReturnTrue(): void
     {
         self::assertTrue(
@@ -286,9 +264,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReplaceEntryWillReturnFalse(): void
     {
         self::assertFalse(
@@ -304,9 +280,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyStdWrapProperties(): void
     {
         $contentObjectRendererMock = self::createMock(ContentObjectRenderer::class);
