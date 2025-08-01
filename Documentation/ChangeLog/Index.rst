@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 4.0.1
+=============
+
+*   [TASK] Update testing directory
+
 Version 4.0.0
 =============
 

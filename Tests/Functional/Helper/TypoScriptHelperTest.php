@@ -43,6 +43,8 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
+
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
     }
 
     public static function hasStdWrapPropertiesDataProvider(): array
