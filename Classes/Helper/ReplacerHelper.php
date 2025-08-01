@@ -84,12 +84,12 @@ class ReplacerHelper
 
         $searchTypoScriptConfiguration = $this->getConfigurationFor(
             $replacerTypoScriptConfiguration,
-            ConfigurationTypeEnumeration::cast('search'),
+            ConfigurationTypeEnumeration::SEARCH,
         );
 
         $replaceTypoScriptConfiguration = $this->getConfigurationFor(
             $replacerTypoScriptConfiguration,
-            ConfigurationTypeEnumeration::cast('replace'),
+            ConfigurationTypeEnumeration::REPLACE,
         );
 
         foreach ($searchTypoScriptConfiguration as $key => $valueOrConfiguration) {
@@ -223,7 +223,7 @@ class ReplacerHelper
         try {
             $typoScriptConfiguration = ArrayUtility::getValueByPath(
                 $replacerConfiguration,
-                (string)$configurationType,
+                $configurationType->getValueAsFormatted(),
             );
 
             // We need correct sorting: 10, 10., 20, 30, 30.
