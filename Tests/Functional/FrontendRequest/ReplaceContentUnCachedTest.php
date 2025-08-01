@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Functional\FrontendRequest;
 
 use JWeiland\Replacer\Tests\Functional\Traits\SetUpFrontendSiteTrait;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -38,9 +39,7 @@ class ReplaceContentUnCachedTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function frontendRequestDoNotReplacesContentOnTypo3Error(): void
     {
         $response = self::executeFrontendSubRequest(
@@ -61,9 +60,7 @@ class ReplaceContentUnCachedTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function frontendRequestReplacesContent(): void
     {
         $response = self::executeFrontendSubRequest(

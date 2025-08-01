@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Tests\Functional\Configuration;
 
 use JWeiland\Replacer\Configuration\ReplaceConfiguration;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ReplaceConfigurationTest extends FunctionalTestCase
@@ -29,9 +30,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
         $this->subject = new ReplaceConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSearchValueInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
@@ -40,9 +39,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSearchValueWillSetSearchValue(): void
     {
         $this->subject->setSearchValue('foo bar');
@@ -53,9 +50,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReplaceValueInitiallyReturnsEmptyString()
     {
         self::assertSame(
@@ -64,9 +59,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReplaceValueSetsReplaceValue()
     {
         $this->subject->setReplaceValue('foo bar');
@@ -77,9 +70,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUseRegExpInitiallyReturnsFalse()
     {
         self::assertFalse(
@@ -87,9 +78,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setUseRegExpSetsUseRegExp()
     {
         $this->subject->setUseRegExp(true);
