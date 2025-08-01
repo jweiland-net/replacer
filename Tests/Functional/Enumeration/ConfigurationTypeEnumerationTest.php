@@ -13,60 +13,40 @@ namespace JWeiland\Replacer\Tests\Functional\Enumeration;
 
 use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ConfigurationTypeEnumerationTest extends FunctionalTestCase
 {
-    protected ConfigurationTypeEnumeration $subject;
-
-    protected array $testExtensionsToLoad = [
-        'jweiland/replacer',
-    ];
-
-    protected function setUp(): void
+    #[Test]
+    public function enumSearchValueIsCorrect(): void
     {
-        parent::setUp();
-
-        $this->subject = new ConfigurationTypeEnumeration();
+        self::assertSame('search', ConfigurationTypeEnumeration::SEARCH->value);
     }
 
     #[Test]
-    public function configurationTypeAsStringWillReturnDefaultValue(): void
+    public function enumReplaceValueIsCorrect(): void
     {
-        self::assertSame(
-            'search.',
-            (string)$this->subject,
-        );
+        self::assertSame('replace', ConfigurationTypeEnumeration::REPLACE->value);
     }
 
     #[Test]
-    public function setValueToSearchWillAppendDot(): void
+    public function validEnumFromString(): void
     {
-        $subject = new ConfigurationTypeEnumeration('search');
-
-        self::assertSame(
-            'search.',
-            (string)$subject,
-        );
+        $enum = ConfigurationTypeEnumeration::from('replace');
+        self::assertSame(ConfigurationTypeEnumeration::REPLACE, $enum);
     }
 
     #[Test]
-    public function setValueToReplaceWillAppendDot(): void
+    public function invalidEnumFromStringThrowsException(): void
     {
-        $subject = new ConfigurationTypeEnumeration('replace');
-
-        self::assertSame(
-            'replace.',
-            (string)$subject,
-        );
+        $this->expectException(\ValueError::class);
+        ConfigurationTypeEnumeration::from('invalid');
     }
 
     #[Test]
-    public function setUnknownValueWillThrowException(): void
+    public function tryFromReturnsNullForInvalidValue(): void
     {
-        self::expectException(InvalidEnumerationValueException::class);
-
-        new ConfigurationTypeEnumeration('reload');
+        $enum = ConfigurationTypeEnumeration::tryFrom('invalid');
+        self::assertNull($enum);
     }
 }

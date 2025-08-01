@@ -287,7 +287,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
         $contentObjectRendererMock
             ->expects(self::atLeastOnce())
             ->method('stdWrap')
-            ->with(self::equalTo('apple'), self::isType('array'))
+            ->with(self::equalTo('apple'), self::isArray())
             ->willReturn('<b>apple</b>');
 
         $controllerMock = self::createMock(TypoScriptFrontendController::class);
