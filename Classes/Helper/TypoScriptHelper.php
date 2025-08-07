@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Helper;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class TypoScriptHelper
 {
@@ -106,11 +108,15 @@ class TypoScriptHelper
     public function applyStdWrapProperties(string $content, array $stdWrapConfiguration, ServerRequestInterface $request): string
     {
         $typoscriptFrontendController = $request->getAttribute('frontend.controller');
-        $contentObjectRenderer = $typoscriptFrontendController->cObj;
-        if ($contentObjectRenderer === null) {
-            return $content;
+
+        if (
+            property_exists($typoscriptFrontendController, 'cObj')
+            && isset($typoscriptFrontendController->cObj)
+            && $typoscriptFrontendController->cObj instanceof ContentObjectRenderer
+        ) {
+            return $typoscriptFrontendController->cObj->stdWrap($content, $stdWrapConfiguration);
         }
 
-        return $contentObjectRenderer->stdWrap($content, $stdWrapConfiguration);
+        return $content;
     }
 }
