@@ -13,7 +13,6 @@ namespace JWeiland\Replacer\Helper;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class TypoScriptHelper
 {
