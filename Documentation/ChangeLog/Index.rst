@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 4.0.2
+=============
+
+*   [BUGFIX] Fixed cObj initialization issues
+
 Version 4.0.1
 =============
 
