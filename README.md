@@ -29,6 +29,11 @@ Login into TYPO3 Backend of your project and click on `Extensions` in the left m
 Press the `Retrieve/Update` button and search for the extension key `replacer`.
 Import the extension from TER (TYPO3 Extension Repository)
 
+## Support
+
+Free Support is available via [Github Issue Tracker](https://github.com/jweiland-net/replacer/issues).
+
+For commercial support, please contact us at [support@jweiland.net](support@jweiland.net).
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
