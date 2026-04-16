@@ -23,12 +23,7 @@ use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
  */
 final class CacheableContentGeneratedEventListener
 {
-    protected ReplacerHelper $replacerHelper;
-
-    public function __construct(ReplacerHelper $replaceHelper)
-    {
-        $this->replacerHelper = $replaceHelper;
-    }
+    public function __construct(private readonly ReplacerHelper $replacerHelper) {}
 
     /**
      * __invoke method for AfterCacheableContentIsGeneratedEvent
@@ -41,9 +36,11 @@ final class CacheableContentGeneratedEventListener
             return;
         }
 
-        $event->getController()->content = $this->replacerHelper->replace(
-            $event->getController()->content,
-            $event->getRequest(),
+        $event->setContent(
+            $this->replacerHelper->replace(
+                $event->getContent(),
+                $event->getRequest(),
+            ),
         );
     }
 }
