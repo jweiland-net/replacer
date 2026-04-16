@@ -7,6 +7,20 @@
 ChangeLog
 =========
 
+Version 5.0.0
+=============
+
+*   [TASK] Add support for TYPO3 v14 LTS
+*   [TASK] Remove support for TYPO3 v13
+*   [TASK] Replace deprecated ``$tsfe->config`` access with ``FrontendTypoScript`` request attribute
+*   [TASK] Replace deprecated ``$tsfe->cObj`` access with ``currentContentObject`` request attribute
+*   [TASK] Migrate ``AfterCacheableContentIsGeneratedEvent`` to use ``getBody()``/``setBody()``
+*   [TASK] Remove dead ``Configuration/Services.php`` TYPO3 <12 version guard
+*   [TASK] Replace ``GeneralUtility::makeInstance`` with ``new`` for ``ReplaceConfiguration``
+*   [TASK] Apply constructor property promotion to ``CacheableContentGeneratedEventListener``
+*   [TASK] Remove dead ``getContentObjectRenderer()`` method from middleware
+*   [TASK] Raise PHPStan level to 9
+
 Version 4.0.2
 =============
 
