@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TypoScriptHelperTest extends FunctionalTestCase
@@ -290,15 +289,12 @@ final class TypoScriptHelperTest extends FunctionalTestCase
             ->with(self::equalTo('apple'), self::isArray())
             ->willReturn('<b>apple</b>');
 
-        $controllerMock = self::createMock(TypoScriptFrontendController::class);
-        $controllerMock->cObj = $contentObjectRendererMock;
-
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.controller', $controllerMock)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('currentContentObject', $contentObjectRendererMock);
 
         self::assertSame(
             '<b>apple</b>',

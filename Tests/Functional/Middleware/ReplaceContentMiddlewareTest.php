@@ -44,7 +44,7 @@ class ReplaceContentMiddlewareTest extends FunctionalTestCase
         $request = new InternalRequest();
         $request = $request->withPageId(1);
 
-        $content = $this->executeFrontendSubRequest($request)->getBody();
+        $content = (string)$this->executeFrontendSubRequest($request)->getBody();
 
         self::assertEquals(
             '<p>I like fruits</p><p>This is MD5 Hash Example: 0800fc577294c34e0b28ad2839435945</p><p>Hello world</p>',
