@@ -16,7 +16,6 @@ use JWeiland\Replacer\Enumeration\ConfigurationTypeEnumeration;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Helper class for content replacement using TSFE
@@ -42,11 +41,9 @@ class ReplacerHelper
      */
     public function replace(string $contentToReplace, ServerRequestInterface $request): string
     {
-        $typoScriptFrontendController = $request->getAttribute('frontend.controller');
-        $replacerTypoScriptConfiguration = $this->getValueByPath(
-            $typoScriptFrontendController->config,
-            'config/tx_replacer.',
-        );
+        $replacerTypoScriptConfiguration = $request
+            ->getAttribute('frontend.typoscript')
+            ?->getConfigArray()['tx_replacer.'] ?? [];
 
         $replacerStorageConfigurations = $this->getReplaceConfigurationStorage(
             $replacerTypoScriptConfiguration,
@@ -250,6 +247,6 @@ class ReplacerHelper
 
     protected function getFreshReplaceConfiguration(): ReplaceConfiguration
     {
-        return GeneralUtility::makeInstance(ReplaceConfiguration::class);
+        return new ReplaceConfiguration();
     }
 }
