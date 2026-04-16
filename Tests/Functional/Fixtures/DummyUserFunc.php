@@ -11,8 +11,11 @@ declare(strict_types=1);
 
 namespace JWeiland\Replacer\Tests\Functional\Fixtures;
 
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+
 class DummyUserFunc
 {
+    #[AsAllowedCallable]
     public function render($_, $conf): string
     {
         return '<p>Hello world</p>';
