@@ -47,7 +47,7 @@ class ReplacerHelper
 
         $replacerStorageConfigurations = $this->getReplaceConfigurationStorage(
             $replacerTypoScriptConfiguration,
-            $request
+            $request,
         );
 
         foreach ($replacerStorageConfigurations as $replaceConfiguration) {
@@ -147,7 +147,7 @@ class ReplacerHelper
         array|string $valueOrConfiguration,
         array $typoScriptConfiguration,
         int|string $key,
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): string {
         if (is_string($valueOrConfiguration)) {
             if ($this->typoScriptHelper->hasStdWrapProperties($typoScriptConfiguration, $key)) {
@@ -166,7 +166,7 @@ class ReplacerHelper
             $value = $this->typoScriptHelper->applyStdWrapProperties(
                 '',
                 $valueOrConfiguration,
-                $request
+                $request,
             );
         }
 
@@ -215,7 +215,7 @@ class ReplacerHelper
      */
     protected function getConfigurationFor(
         array $replacerConfiguration,
-        ConfigurationTypeEnumeration $configurationType
+        ConfigurationTypeEnumeration $configurationType,
     ): array {
         try {
             $typoScriptConfiguration = ArrayUtility::getValueByPath(

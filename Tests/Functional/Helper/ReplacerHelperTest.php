@@ -111,7 +111,7 @@ final class ReplacerHelperTest extends FunctionalTestCase
         array $search,
         array $replacement,
         string $contentToReplace,
-        string $result
+        string $result,
     ): void {
         $config = [
             'config' => [
