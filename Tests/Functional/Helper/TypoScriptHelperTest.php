@@ -303,7 +303,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
                 [
                     'wrap' => '<b>|</b>',
                 ],
-                $this->request
+                $this->request,
             ),
         );
     }
