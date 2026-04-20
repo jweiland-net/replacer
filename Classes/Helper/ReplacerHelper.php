@@ -95,8 +95,7 @@ class ReplacerHelper
             if (
                 (is_array($valueOrConfiguration)
                     && $this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key))
-                ||
-                ($this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key)
+                || ($this->typoScriptHelper->hasBaseEntry($searchTypoScriptConfiguration, $key)
                     && !$this->typoScriptHelper->hasReplaceEntry($replaceTypoScriptConfiguration, $key))
             ) {
                 continue;
@@ -178,7 +177,6 @@ class ReplacerHelper
      */
     protected function getContentForProcessing(array $processingConfig, string $configurationSearchPointer): string
     {
-
         $contentForProcessing = $this->getValueByPath(
             $processingConfig,
             'search./' . $configurationSearchPointer,
@@ -204,7 +202,7 @@ class ReplacerHelper
      * @param array<int, mixed>|null $configuration
      * @return bool
      */
-    protected function shouldDoStdWrap(array|null $configuration): bool
+    protected function shouldDoStdWrap(?array $configuration): bool
     {
         return is_array($configuration);
     }

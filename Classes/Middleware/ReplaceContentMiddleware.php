@@ -41,5 +41,4 @@ class ReplaceContentMiddleware implements MiddlewareInterface
 
         return $response->withBody($body);
     }
-
 }
