@@ -14,7 +14,7 @@ namespace JWeiland\Replacer\Configuration;
 /**
  * Contains the configuration how to replace a search value
  */
-class ReplaceConfiguration
+final class ReplaceConfiguration
 {
     protected string $searchValue = '';
 
