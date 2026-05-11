@@ -16,11 +16,11 @@ namespace JWeiland\Replacer\Configuration;
  */
 final class ReplaceConfiguration
 {
-    protected string $searchValue = '';
+    private string $searchValue = '';
 
-    protected string $replaceValue = '';
+    private string $replaceValue = '';
 
-    protected bool $useRegExp = false;
+    private bool $useRegExp = false;
 
     public function getSearchValue(): string
     {
