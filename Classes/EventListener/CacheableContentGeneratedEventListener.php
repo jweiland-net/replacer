@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\EventListener;
 
 use JWeiland\Replacer\Helper\ReplacerHelper;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
 /**
@@ -24,7 +25,6 @@ use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
  */
 #[AsEventListener(
     identifier: 'replacer/content-modifier',
-    before: 'someIdentifier, anotherIdentifier',
 )]
 final readonly class CacheableContentGeneratedEventListener
 {
