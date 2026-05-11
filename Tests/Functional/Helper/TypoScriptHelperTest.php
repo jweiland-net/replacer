@@ -35,7 +35,7 @@ final class TypoScriptHelperTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->subject = new TypoScriptHelper();
+        $this->subject = $this->get(TypoScriptHelper::class);
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
