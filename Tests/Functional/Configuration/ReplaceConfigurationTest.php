@@ -51,7 +51,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function getReplaceValueInitiallyReturnsEmptyString()
+    public function getReplaceValueInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
             '',
@@ -60,7 +60,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function setReplaceValueSetsReplaceValue()
+    public function setReplaceValueSetsReplaceValue(): void
     {
         $this->subject->setReplaceValue('foo bar');
 
@@ -71,7 +71,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function getUseRegExpInitiallyReturnsFalse()
+    public function getUseRegExpInitiallyReturnsFalse(): void
     {
         self::assertFalse(
             $this->subject->isUseRegExp(),
@@ -79,7 +79,7 @@ final class ReplaceConfigurationTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function setUseRegExpSetsUseRegExp()
+    public function setUseRegExpSetsUseRegExp(): void
     {
         $this->subject->setUseRegExp(true);
 
