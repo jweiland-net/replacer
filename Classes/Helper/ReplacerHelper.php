@@ -41,6 +41,8 @@ final readonly class ReplacerHelper
      */
     public function replace(string $contentToReplace, ServerRequestInterface $request): string
     {
+        $request = $this->typoScriptHelper->getContentObjectRenderer($request);
+
         $replacerTypoScriptConfiguration = $request
             ->getAttribute('frontend.typoscript')
             ?->getConfigArray()['tx_replacer.'] ?? [];
