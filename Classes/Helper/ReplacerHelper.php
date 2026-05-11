@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 /**
  * Helper class for content replacement using TSFE
  */
-class ReplacerHelper
+final readonly class ReplacerHelper
 {
     public function __construct(protected TypoScriptHelper $typoScriptHelper) {}
 
