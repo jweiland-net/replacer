@@ -44,8 +44,8 @@ final class ReplacerHelperTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->setUpFrontendSite(1);
-
-        $this->subject = new ReplacerHelper(new TypoScriptHelper());
+        $typoscriptHelper = $this->get(TypoScriptHelper::class);
+        $this->subject = new ReplacerHelper($typoscriptHelper);
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
@@ -56,7 +56,7 @@ final class ReplacerHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @returnDataProvider
+     * @return array<string, mixed>
      */
     public static function validReplacements(): array
     {
