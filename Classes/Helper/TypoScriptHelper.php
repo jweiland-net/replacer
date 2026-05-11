@@ -12,11 +12,14 @@ declare(strict_types=1);
 namespace JWeiland\Replacer\Helper;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
-class TypoScriptHelper
+final readonly class TypoScriptHelper
 {
+    public function __construct(private LoggerInterface $logger) {}
+
     /**
      * @param array<int, mixed> $typoScriptConfiguration
      */
@@ -108,10 +111,15 @@ class TypoScriptHelper
     public function applyStdWrapProperties(string $content, array $stdWrapConfiguration, ServerRequestInterface $request): string
     {
         $contentObjectRenderer = $request->getAttribute('currentContentObject');
-
         if (!$contentObjectRenderer instanceof ContentObjectRenderer) {
+            $this->logger->info('Creating fallback ContentObjectRenderer for CacheableContentGeneratedEvent context.');
             $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $contentObjectRenderer->start([], '');
+            // Defining page data if available in the request
+            $routingResult = $request->getAttribute('routing');
+            $pageId = $routingResult?->getPageId() ?? 0;
+
+            // Start the cObj with at least the current page ID to provide some context
+            $contentObjectRenderer->start(['uid' => $pageId], 'pages');
             $contentObjectRenderer->setCurrentVal($content);
         }
 
