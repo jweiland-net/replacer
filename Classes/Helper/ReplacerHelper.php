@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
  */
 final readonly class ReplacerHelper
 {
-    public function __construct(protected TypoScriptHelper $typoScriptHelper) {}
+    public function __construct(private TypoScriptHelper $typoScriptHelper) {}
 
     /**
      * Search and replace text from $contentToReplace
@@ -75,7 +75,7 @@ final readonly class ReplacerHelper
      * @param array<int, mixed> $replacerTypoScriptConfiguration
      * @return \SplObjectStorage<object, mixed>
      */
-    protected function getReplaceConfigurationStorage(array $replacerTypoScriptConfiguration, ServerRequestInterface $request): \SplObjectStorage
+    private function getReplaceConfigurationStorage(array $replacerTypoScriptConfiguration, ServerRequestInterface $request): \SplObjectStorage
     {
         $replacerConfigurationStorage = new \SplObjectStorage();
 
@@ -142,7 +142,7 @@ final readonly class ReplacerHelper
      * @param array<int, mixed>|string $valueOrConfiguration
      * @param array<int, mixed> $typoScriptConfiguration
      */
-    protected function getProcessedValue(
+    private function getProcessedValue(
         array|string $valueOrConfiguration,
         array $typoScriptConfiguration,
         int|string $key,
@@ -175,7 +175,7 @@ final readonly class ReplacerHelper
     /**
      * @param array<int, string> $processingConfig
      */
-    protected function getContentForProcessing(array $processingConfig, string $configurationSearchPointer): string
+    private function getContentForProcessing(array $processingConfig, string $configurationSearchPointer): string
     {
         $contentForProcessing = $this->getValueByPath(
             $processingConfig,
@@ -202,7 +202,7 @@ final readonly class ReplacerHelper
      * @param array<int, mixed>|null $configuration
      * @return bool
      */
-    protected function shouldDoStdWrap(?array $configuration): bool
+    private function shouldDoStdWrap(?array $configuration): bool
     {
         return is_array($configuration);
     }
@@ -211,7 +211,7 @@ final readonly class ReplacerHelper
      * @param array<int, mixed> $replacerConfiguration
      * @return array<int,mixed>
      */
-    protected function getConfigurationFor(
+    private function getConfigurationFor(
         array $replacerConfiguration,
         ConfigurationTypeEnumeration $configurationType,
     ): array {
@@ -234,7 +234,7 @@ final readonly class ReplacerHelper
      * @param array<int, mixed> $array
      * @return array<int, mixed>|string|null
      */
-    protected function getValueByPath(array $array, string $path): array|string|null
+    private function getValueByPath(array $array, string $path): array|string|null
     {
         try {
             return ArrayUtility::getValueByPath($array, $path);
@@ -243,7 +243,7 @@ final readonly class ReplacerHelper
         }
     }
 
-    protected function getFreshReplaceConfiguration(): ReplaceConfiguration
+    private function getFreshReplaceConfiguration(): ReplaceConfiguration
     {
         return new ReplaceConfiguration();
     }
