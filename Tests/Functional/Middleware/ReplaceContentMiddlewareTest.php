@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReplaceContentMiddlewareTest extends FunctionalTestCase
+final class ReplaceContentMiddlewareTest extends FunctionalTestCase
 {
     use SetUpFrontendSiteTrait;
 
