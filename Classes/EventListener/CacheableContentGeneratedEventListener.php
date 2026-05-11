@@ -19,11 +19,16 @@ use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
  * after the CacheableContentIsGeneratedEvent has occurred in TYPO3.
  * It allows for custom actions to be taken when cacheable content is generated.
  * The idea of this implementation is mainly for replacing the Hook implemented with 'contentPostProc-all' (It is
- * removed in TYPO3 12)
+ * removed in TYPO3 12) the implementation is same as the ReplaceContent Middleware (which only replace for
+ * USER_INT Plugins)
  */
-final class CacheableContentGeneratedEventListener
+#[AsEventListener(
+    identifier: 'replacer/content-modifier',
+    before: 'someIdentifier, anotherIdentifier',
+)]
+final readonly class CacheableContentGeneratedEventListener
 {
-    public function __construct(private readonly ReplacerHelper $replacerHelper) {}
+    public function __construct(private ReplacerHelper $replacerHelper) {}
 
     /**
      * __invoke method for AfterCacheableContentIsGeneratedEvent
