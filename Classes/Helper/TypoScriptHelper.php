@@ -105,6 +105,21 @@ final readonly class TypoScriptHelper
             || isset($typoScriptConfiguration[$keyCombinedWithTypoScriptPointer]);
     }
 
+    public function getContentObjectRenderer(ServerRequestInterface $request): ServerRequestInterface
+    {
+        if ($request->getAttribute('currentContentObject') instanceof ContentObjectRenderer) {
+            return $request;
+        }
+
+        $this->logger->info('Creating fallback ContentObjectRenderer for replacer context.');
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $routingResult = $request->getAttribute('routing');
+        $pageId = $routingResult?->getPageId() ?? 0;
+        $contentObjectRenderer->start(['uid' => $pageId], 'pages');
+
+        return $request->withAttribute('currentContentObject', $contentObjectRenderer);
+    }
+
     /**
      * @param array<int, string> $stdWrapConfiguration
      */
@@ -112,15 +127,7 @@ final readonly class TypoScriptHelper
     {
         $contentObjectRenderer = $request->getAttribute('currentContentObject');
         if (!$contentObjectRenderer instanceof ContentObjectRenderer) {
-            $this->logger->info('Creating fallback ContentObjectRenderer for CacheableContentGeneratedEvent context.');
-            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            // Defining page data if available in the request
-            $routingResult = $request->getAttribute('routing');
-            $pageId = $routingResult?->getPageId() ?? 0;
-
-            // Start the cObj with at least the current page ID to provide some context
-            $contentObjectRenderer->start(['uid' => $pageId], 'pages');
-            $contentObjectRenderer->setCurrentVal($content);
+            return $content;
         }
 
         return (string)$contentObjectRenderer->stdWrap($content, $stdWrapConfiguration);
